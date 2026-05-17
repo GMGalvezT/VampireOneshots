@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VTM V5: Tablero de Control - Intrigas en Los Colomos</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        vampire: {
+                            bg: '#0f0f12',
+                            card: '#18181f',
+                            accent: '#991b1b', // Red-800
+                            accentHover: '#7f1d1d', // Red-900
+                            border: '#2e2e3a',
+                            textMuted: '#9ca3af',
+                            success: '#16a34a',
+                            failure: '#dc2626',
+                            messy: '#ea580c',
+                            bestial: '#7f1d1d'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background-color: #0f0f12;
+            color: #e5e7eb;
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+        }
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0f0f12;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #2e2e3a;
+            border-radius: 3px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #991b1b;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col">
+
+    <!-- Header -->
+    <header class="bg-vampire-card border-b border-vampire-border p-4 sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
+            <div class="flex items-center gap-3">
+                <svg class="w-8 h-8 text-vampire-accent" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/>
+                </svg>
+                <div>
+                    <h1 class="text-xl font-bold tracking-wider text-red-500 uppercase">Intrigas en Los Colomos</h1>
+                    <p class="text-xs text-vampire-textMuted">Mecánicas de Soporte y Árbitro de VTM 5ª Edición</p>
+                </div>
+            </div>
+            <div class="flex items-center gap-4">
+                <span class="text-sm bg-vampire-border px-3 py-1 rounded-full border border-vampire-border text-red-400">
+                    One-Shot: 1 Sesión
+                </span>
+                <span class="text-sm bg-vampire-accent/20 px-3 py-1 rounded-full border border-vampire-accent text-red-200">
+                    GM Companion
+                </span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Workspace -->
+    <main class="flex-grow max-w-7xl w-full mx-auto p-4 grid grid-cols-1 lg:grid-cols-12 gap-6">
+        
+        <!-- Left Side: Interactive Dice Roller & Rules (5 Cols) -->
+        <section class="lg:col-span-5 flex flex-col gap-6">
+            
+            <!-- V5 Dice Simulator -->
+            <div class="bg-vampire-card border border-vampire-border rounded-lg p-5 shadow-lg">
+                <h2 class="text-lg font-bold border-b border-vampire-border pb-2 mb-4 flex items-center gap-2 text-red-500">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4m0 5c0 2.21-3.582 4-8 4s-8-1.79-8-4"></path></svg>
+                    Simulador de Dados V5 (Árbitro)
+                </h2>
+                
+                <div class="grid grid-cols-3 gap-3 mb-4">
+                    <div>
+                        <label class="block text-xs text-vampire-textMuted uppercase mb-1 font-semibold">Pool Total</label>
+                        <input type="number" id="dice-pool" min="1" max="20" value="6" class="w-full bg-vampire-bg border border-vampire-border rounded px-3 py-2 text-white focus:outline-none focus:border-vampire-accent font-mono text-center text-lg">
+                    </div>
+                    <div>
+                        <label class="block text-xs text-vampire-textMuted uppercase mb-1 font-semibold">Ansia (Hunger)</label>
+                        <input type="number" id="dice-hunger" min="0" max="5" value="1" class="w-full bg-vampire-bg border border-vampire-border rounded px-3 py-2 text-white focus:outline-none focus:border-vampire-accent font-mono text-center text-lg text-red-500">
+                    </div>
+                    <div>
+                        <label class="block text-xs text-vampire-textMuted uppercase mb-1 font-semibold">Dificultad</label>
+                        <input type="number" id="dice-difficulty" min="1" max="10" value="3" class="w-full bg-vampire-bg border border-vampire-border rounded px-3 py-2 text-white focus:outline-none focus:border-vampire-accent font-mono text-center text-lg text-green-500">
+                    </div>
+                </div>
+
+                <button onclick="rollV5Dice()" class="w-full bg-vampire-accent hover:bg-vampire-accentHover text-white font-bold py-3 px-4 rounded transition-colors uppercase tracking-wider text-sm flex items-center justify-center gap-2">
+                    Lanzar Dados V5
+                </button>
+
+                <!-- Results Output Panel -->
+                <div id="roll-output" class="mt-4 hidden bg-vampire-bg border border-vampire-border rounded p-4">
+                    <div class="flex justify-between items-center mb-3">
+                        <span class="text-xs text-vampire-textMuted uppercase font-semibold">Resultado de la Prueba</span>
+                        <span id="outcome-badge" class="px-2.5 py-1 rounded text-xs font-bold uppercase tracking-wider"></span>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-2 mb-3 text-center border-b border-vampire-border/50 pb-3">
+                        <div class="border-r border-vampire-border/50">
+                            <span class="text-2xl font-bold text-white font-mono" id="success-count">0</span>
+                            <p class="text-[10px] text-vampire-textMuted uppercase">Éxitos Totales</p>
+                        </div>
+                        <div>
+                            <span class="text-2xl font-bold text-white font-mono" id="margin-count">0</span>
+                            <p class="text-[10px] text-vampire-textMuted uppercase" id="margin-label">Margen</p>
+                        </div>
+                    </div>
+
+                    <!-- Visual Dice Display -->
+                    <div class="mb-2">
+                        <p class="text-[10px] text-vampire-textMuted uppercase mb-1 font-semibold">Dados Normales:</p>
+                        <div id="normal-dice-container" class="flex flex-wrap gap-1.5 min-h-[36px]"></div>
+                    </div>
+                    <div>
+                        <p class="text-[10px] text-red-400 uppercase mb-1 font-semibold">Dados de Ansia:</p>
+                        <div id="hunger-dice-container" class="flex flex-wrap gap-1.5 min-h-[36px]"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quick Rule Reference V5 -->
+            <div class="bg-vampire-card border border-vampire-border rounded-lg p-5 shadow-lg flex-grow">
+                <h2 class="text-lg font-bold border-b border-vampire-border pb-2 mb-3 text-red-500 flex items-center gap-2">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path></svg>
+                    Prontuario Técnico de Reglas (V5)
+                </h2>
+                
+                <div class="text-sm space-y-3">
+                    <div class="border-l-2 border-vampire-accent pl-2">
+                        <strong class="text-white block">Sistemas de Dados (Dificultades estándar)</strong>
+                        <p class="text-xs text-vampire-textMuted">Cada dado de valor <span class="font-mono text-white">6-9</span> es 1 Éxito. Los <span class="font-mono text-white">10</span> otorgan 1 Éxito, pero cada par de <span class="font-mono text-white">10s</span> sumados otorgan 4 éxitos en total (Crítico).</p>
+                    </div>
+                    <div class="border-l-2 border-orange-500 pl-2">
+                        <strong class="text-white block">Crítico Sucio (Messy Critical)</strong>
+                        <p class="text-xs text-vampire-textMuted">Ocurre si la prueba se gana mediante un Crítico que incluye al menos un <span class="font-mono text-orange-500">10</span> en un Dado de Ansia. La Bestia interviene de manera caótica.</p>
+                    </div>
+                    <div class="border-l-2 border-red-900 pl-2">
+                        <strong class="text-white block">Fallo Bestial (Bestial Failure)</strong>
+                        <p class="text-xs text-vampire-textMuted">Ocurre si la prueba falla y se obtiene al menos un <span class="font-mono text-red-500">1</span> en un Dado de Ansia. Desata Compulsión o Frenesí.</p>
+                    </div>
+                    <div class="border-l-2 border-blue-500 pl-2">
+                        <strong class="text-white block">Resolución de Daño Físico</strong>
+                        <p class="text-xs text-vampire-textMuted">Las balas de armas de fuego causan <span class="text-blue-400 font-semibold">Daño Superficial</span> a los Vástagos. Éxitos netos del atacante divididos entre 2 (redondear hacia arriba). Los mortales sufren daño físico completo sin división.</p>
+                    </div>
+                    <div class="border-l-2 border-purple-500 pl-2">
+                        <strong class="text-white block">Manipulación Mental a Cazadores Civiles</strong>
+                        <p class="text-xs text-vampire-textMuted">Dado que los cazadores son "ignorantes" y no tienen protección psíquica o mística, los poderes de <em>Dominación</em> o <em>Presencia</em> aplicados sobre ellos reducen la dificultad en 1 punto (mínimo 1).</p>
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+        <!-- Right Side: Adventure Progression, Scenes & NPCs (7 Cols) -->
+        <section class="lg:col-span-7 flex flex-col gap-6">
+            
+            <!-- Scene Tracker -->
+            <div class="bg-vampire-card border border-vampire-border rounded-lg p-5 shadow-lg">
+                <div class="flex justify-between items-center border-b border-vampire-border pb-3 mb-4">
+                    <h2 class="text-lg font-bold text-red-500 flex items-center gap-2">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-2 5h3m-3 4h3m-6-4h.01M9 16h.01"></path></svg>
+                        Estructura del One-Shot (Escenas)
+                    </h2>
+                    <span class="text-xs text-vampire-textMuted font-mono">Guadalajara: Los Colomos</span>
+                </div>
+
+                <div class="space-y-4">
+                    
+                    <!-- Scene 1 -->
+                    <div class="border border-vampire-border rounded p-3 bg-vampire-bg/40 relative">
+                        <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-2 gap-2">
+                            <span class="text-xs font-bold text-red-400 bg-red-950/40 px-2 py-0.5 rounded border border-red-900/60">Escena 1: El Informe de Exis</span>
+                            <button onclick="loadPool(5, 3)" class="text-xs bg-vampire-accent/10 hover:bg-vampire-accent text-red-400 hover:text-white px-2.5 py-1 rounded border border-vampire-accent/40 transition-colors font-mono">
+                                Cargar Pool: Int. + Invest. (Dificultad 3)
+                            </button>
+                        </div>
+                        <p class="text-xs text-vampire-textMuted">
+                            El Sheriff Brujah <strong class="text-white">Exis</strong> entrega documentos interceptados sobre la retención de permisos de suelo en la Capilla de Los Colomos. Revela el nexo con la constructora mamposta "Corporativo Alba", controlada por la Regidora <strong class="text-white">Sofía Vega</strong>.
+                        </p>
+                    </div>
+
+                    <!-- Scene 2 -->
+                    <div class="border border-vampire-border rounded p-3 bg-vampire-bg/40">
+                        <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-2 gap-2">
+                            <span class="text-xs font-bold text-red-400 bg-red-950/40 px-2 py-0.5 rounded border border-red-900/60">Escena 2: Interrogatorio y Emboscada</span>
+                            <button onclick="loadPool(6, 4)" class="text-xs bg-vampire-accent/10 hover:bg-vampire-accent text-red-400 hover:text-white px-2.5 py-1 rounded border border-vampire-accent/40 transition-colors font-mono">
+                                Cargar Pool: Manip. + Perspicacia (Oposición 4 dados)
+                            </button>
+                        </div>
+                        <p class="text-xs text-vampire-textMuted mb-2">
+                            Los personajes confrontan a <strong class="text-white">Sofía Vega</strong> en sus oficinas locales. Ella confiesa recibir fondos indirectos de los "saboteadores" (vampiros independientes). A mitad de la escena, irrumpe una patrulla inicial de cazadores tácticos de <strong class="text-white">El Filo del Alba</strong>.
+                        </p>
+                        <div class="bg-vampire-card p-2 rounded text-[11px] border border-vampire-border flex items-center justify-between">
+                            <span class="text-red-400 font-semibold">Tirada de Alerta (Emboscada):</span>
+                            <button onclick="loadPool(5, 3)" class="text-[10px] text-vampire-textMuted hover:text-white underline">Cargar Astucia + Alerta (Dif 3)</button>
+                        </div>
+                    </div>
+
+                    <!-- Scene 3 -->
+                    <div class="border border-vampire-border rounded p-3 bg-vampire-bg/40">
+                        <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-2 gap-2">
+                            <span class="text-xs font-bold text-red-400 bg-red-950/40 px-2 py-0.5 rounded border border-red-900/60">Escena 3: Asalto en Los Colomos</span>
+                            <span class="text-xs text-vampire-textMuted font-mono">Resolución Final</span>
+                        </div>
+                        <p class="text-xs text-vampire-textMuted">
+                            Confrontación en las inmediaciones valladas de la obra detenida en Los Colomos. Los Vástagos deben asaltar la terminal de control financiero de los saboteadores, custodiada por cazadores fuertemente armados pero desinformados de los poderes de la Sangre.
+                        </p>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- NPC / Adversary Panel (El Filo del Alba) -->
+            <div class="bg-vampire-card border border-vampire-border rounded-lg p-5 shadow-lg flex-grow">
+                <h2 class="text-lg font-bold border-b border-vampire-border pb-3 mb-4 text-red-500 flex items-center justify-between">
+                    <span class="flex items-center gap-2">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
+                        Gestión de Antagonistas: "El Filo del Alba"
+                    </span>
+                    <button onclick="resetCazadores()" class="text-xs bg-vampire-border hover:bg-vampire-accent text-vampire-textMuted hover:text-white px-2.5 py-1 rounded transition-colors">
+                        Restablecer
+                    </button>
+                </h2>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    
+                    <!-- Cazador 1 -->
+                    <div class="bg-vampire-bg p-3 rounded border border-vampire-border">
+                        <div class="flex justify-between items-center mb-2">
+                            <span class="text-xs font-bold text-white font-mono">Cazador Táctico A</span>
+                            <span class="text-[10px] text-vampire-textMuted uppercase">Filo del Alba</span>
+                        </div>
+                        <div class="flex items-center gap-2 mb-3">
+                            <span class="text-[11px] text-vampire-textMuted">Salud:</span>
+                            <div class="flex gap-1" id="health-tracker-a">
+                                <button onclick="toggleHealth('a', 0)" class="w-4 h-4 border border-vampire-border bg-vampire-card rounded flex items-center justify-center text-[10px] font-bold text-red-500 font-mono" title="Click para marcar daño"></button>
+                                <button onclick="toggleHealth('a', 1)" class="w-4 h-4 border border-vampire-border bg-vampire-card rounded flex items-center justify-center text-[10px] font-bold text-red-500 font-mono"></button>
+                                <button onclick="toggleHealth('a', 2)" class="w-4 h-4 border border-vampire-border bg-vampire-card rounded flex items-center justify-center text-[10px] font-bold text-red-500 font-mono"></button>
+                                <button onclick="toggleHealth('a', 3)" class="w-4 h-4 border border-vampire-border bg-vampire-card rounded flex items-center justify-center text-[10px] font-bold text-red-500 font-mono"></button>
+                                <button onclick="toggleHealth('a', 4)" class="w-4 h-4 border border-vampire-border bg-vampire-card rounded flex items-center justify-center text-[10px] font-bold text-red-500 font-mono"></button>
+                                <button onclick="toggleHealth('a', 5)" class="w-4 h-4 border border-vampire-border bg-vampire-card rounded flex items-center justify-center text-[10px] font-bold text-red-500 font-mono"></button>
+                            </div>
+                        </div>
+                        <div class="text-[11px] text-vampire-textMuted space-y-0.5">
+                            <p><strong>Ataque:</strong> Armas de Fuego (Rifle de Asalto) Pool: <strong class="text-white">6 Dados</strong></p>
+                            <p><strong>Efecto Balas:</strong> Daño Superficial a Vástagos (Dividir éxitos / 2)</p>
+                        </div>
+                    </div>
+
+                    <!-- Cazador 2 -->
+                    <div class="bg-vampire-bg p-3 rounded border border-vampire-border">
+                        <div class="flex justify-between items-center mb-2">
+                            <span class="text-xs font-bold text-white font-mono">Cazador Táctico B</span>
+                            <span class="text-[10px] text-vampire-textMuted uppercase">Filo del Alba</span>
+                        </div>
+                        <div class="flex items-center gap-2 mb-3">
+                            <span class="text-[11px] text-vampire-textMuted">Salud:</span>
+                            <div class="flex gap-1" id="health-tracker-b">
+                                <button onclick="toggleHealth('b', 0)" class="w-4 h-4 border border-vampire-border bg-vampire-card rounded flex items-center justify-center text-[10px] font-bold text-red-500 font-mono"></button>
+                                <button onclick="toggleHealth('b', 1)" class="w-4 h-4 border border-vampire-border bg-vampire-card rounded flex items-center justify-center text-[10px] font-bold text-red-500 font-mono"></button>
+                                <button onclick="toggleHealth('b', 2)" class="w-4 h-4 border border-vampire-border bg-vampire-card rounded flex items-center justify-center text-[10px] font-bold text-red-500 font-mono"></button>
+                                <button onclick="toggleHealth('b', 3)" class="w-4 h-4 border border-vampire-border bg-vampire-card rounded flex items-center justify-center text-[10px] font-bold text-red-500 font-mono"></button>
+                                <button onclick="toggleHealth('b', 4)" class="w-4 h-4 border border-vampire-border bg-vampire-card rounded flex items-center justify-center text-[10px] font-bold text-red-500 font-mono"></button>
+                                <button onclick="toggleHealth('b', 5)" class="w-4 h-4 border border-vampire-border bg-vampire-card rounded flex items-center justify-center text-[10px] font-bold text-red-500 font-mono"></button>
+                            </div>
+                        </div>
+                        <div class="text-[11px] text-vampire-textMuted space-y-0.5">
+                            <p><strong>Ataque:</strong> Armas de Fuego (Escopeta Conv.) Pool: <strong class="text-white">6 Dados</strong></p>
+                            <p><strong>Efecto Balas:</strong> Daño Superficial a Vástagos (Dividir éxitos / 2)</p>
+                        </div>
+                    </div>
+
+                    <!-- Cazador 3 (Pesado) -->
+                    <div class="bg-vampire-bg p-3 rounded border border-vampire-border">
+                        <div class="flex justify-between items-center mb-2">
+                            <span class="text-xs font-bold text-red-400 font-mono">Líder de Célula (Pesado)</span>
+                            <span class="text-[10px] text-vampire-textMuted uppercase font-semibold">Táctico</span>
+                        </div>
+                        <div class="flex items-center gap-2 mb-3">
+                            <span class="text-[11px] text-vampire-textMuted">Salud:</span>
+                            <div class="flex gap-1" id="health-tracker-c">
+                                <button onclick="toggleHealth('c', 0)" class="w-4 h-4 border border-vampire-border bg-vampire-card rounded flex items-center justify-center text-[10px] font-bold text-red-500 font-mono"></button>
+                                <button onclick="toggleHealth('c', 1)" class="w-4 h-4 border border-vampire-border bg-vampire-card rounded flex items-center justify-center text-[10px] font-bold text-red-500 font-mono"></button>
+                                <button onclick="toggleHealth('c', 2)" class="w-4 h-4 border border-vampire-border bg-vampire-card rounded flex items-center justify-center text-[10px] font-bold text-red-500 font-mono"></button>
+                                <button onclick="toggleHealth('c', 3)" class="w-4 h-4 border border-vampire-border bg-vampire-card rounded flex items-center justify-center text-[10px] font-bold text-red-500 font-mono"></button>
+                                <button onclick="toggleHealth('c', 4)" class="w-4 h-4 border border-vampire-border bg-vampire-card rounded flex items-center justify-center text-[10px] font-bold text-red-500 font-mono"></button>
+                                <button onclick="toggleHealth('c', 5)" class="w-4 h-4 border border-vampire-border bg-vampire-card rounded flex items-center justify-center text-[10px] font-bold text-red-500 font-mono"></button>
+                                <button onclick="toggleHealth('c', 6)" class="w-4 h-4 border border-vampire-border bg-vampire-card rounded flex items-center justify-center text-[10px] font-bold text-red-500 font-mono"></button>
+                                <button onclick="toggleHealth('c', 7)" class="w-4 h-4 border border-vampire-border bg-vampire-card rounded flex items-center justify-center text-[10px] font-bold text-red-500 font-mono"></button>
+                            </div>
+                        </div>
+                        <div class="text-[11px] text-vampire-textMuted space-y-0.5">
+                            <p><strong>Ataque:</strong> Rifle de Precisión / Armas Tácticas. Pool: <strong class="text-white">7 Dados</strong></p>
+                            <p><strong>Reserva de Voluntad:</strong> 5 (Frente a ataques sociales / Dominación)</p>
+                        </div>
+                    </div>
+
+                    <!-- Sofía Vega (El Nexo) -->
+                    <div class="bg-vampire-bg p-3 rounded border border-vampire-border flex flex-col justify-between">
+                        <div>
+                            <div class="flex justify-between items-center mb-2">
+                                <span class="text-xs font-bold text-white font-mono">Regidora Sofía Vega</span>
+                                <span class="text-[10px] text-yellow-500 uppercase font-semibold">El Nexo</span>
+                            </div>
+                            <p class="text-[11px] text-vampire-textMuted mb-2">
+                                Humana manipulada financieramente por los saboteadores. No posee disciplinas místicas.
+                            </p>
+                        </div>
+                        <div class="text-[11px] text-vampire-textMuted">
+                            <p><strong>Reserva Mental de Oposición:</strong> <strong class="text-white">4 Dados</strong> (Astucia + Resolución)</p>
+                            <p><strong>Vulnerabilidad:</strong> Dificultad -1 contra Dominación / Presencia.</p>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-vampire-card border-t border-vampire-border p-4 text-center mt-6">
+        <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-2">
+            <span class="text-xs text-vampire-textMuted">
+                © VTM Fifth Edition - Diseñado para Árbitro de Reglas e Interacción Rápida.
+            </span>
+            <div class="flex items-center gap-4 text-xs text-vampire-textMuted">
+                <span>Manual de Referencia: [VTM Corebook V5]</span>
+                <span>Ubicación: Los Colomos, GDL</span>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Interactive JS Systems -->
+    <script>
+        // Loaded pool preset function
+        function loadPool(pool, difficulty) {
+            document.getElementById('dice-pool').value = pool;
+            document.getElementById('dice-difficulty').value = difficulty;
+            
+            // Visual pulse effect
+            const container = document.getElementById('dice-pool').parentElement;
+            container.classList.add('bg-vampire-accent/10');
+            setTimeout(() => {
+                container.classList.remove('bg-vampire-accent/10');
+            }, 300);
+        }
+
+        // V5 Core Dice Roller Simulation
+        function rollV5Dice() {
+            const totalPoolInput = document.getElementById('dice-pool');
+            const hungerInput = document.getElementById('dice-hunger');
+            const difficultyInput = document.getElementById('dice-difficulty');
+
+            let totalPool = parseInt(totalPoolInput.value) || 1;
+            let hunger = parseInt(hungerInput.value) || 0;
+            let difficulty = parseInt(difficultyInput.value) || 1;
+
+            // Boundary validation
+            if (totalPool < 1) totalPool = 1;
+            if (hunger < 0) hunger = 0;
+            if (hunger > 5) hunger = 5;
+
+            // In V5, Hunger dice replace normal dice. The number of hunger dice cannot exceed the total pool.
+            let hungerDiceCount = Math.min(hunger, totalPool);
+            let normalDiceCount = totalPool - hungerDiceCount;
+
+            let normalDiceResults = [];
+            let hungerDiceResults = [];
+
+            // Roll Normal Dice
+            for (let i = 0; i < normalDiceCount; i++) {
+                normalDiceResults.push(Math.floor(Math.random() * 10) + 1);
+            }
+
+            // Roll Hunger Dice
+            for (let i = 0; i < hungerDiceCount; i++) {
+                hungerDiceResults.push(Math.floor(Math.random() * 10) + 1);
+            }
+
+            // Calculate successes (V5 rules)
+            let normalSuccesses = normalDiceResults.filter(d => d >= 6).length;
+            let hungerSuccesses = hungerDiceResults.filter(d => d >= 6).length;
+
+            // Calculate criticals (Pairs of 10s count as 4 successes total instead of 2)
+            let normalTens = normalDiceResults.filter(d => d === 10).length;
+            let hungerTens = hungerDiceResults.filter(d => d === 10).length;
+            let totalTens = normalTens + hungerTens;
+            let criticalPairs = Math.floor(totalTens / 2);
+
+            let rawSuccesses = normalSuccesses + hungerSuccesses;
+            // For each critical pair, we add an extra 2 successes (since we already counted each 10 as 1 success, adding 2 makes each pair count as 4)
+            let totalSuccesses = rawSuccesses + (criticalPairs * 2);
+
+            // Determine special outcomes
+            let isWin = totalSuccesses >= difficulty;
+            let hasHungerTen = hungerDiceResults.includes(10);
+            let hasHungerOne = hungerDiceResults.includes(1);
+            let hasCritical = criticalPairs > 0;
+
+            let outcome = "Fallo";
+            let outcomeClass = "bg-vampire-failure text-white border border-red-500";
+
+            if (isWin) {
+                if (hasCritical && hasHungerTen) {
+                    outcome = "Crítico Sucio (Messy Critical)";
+                    outcomeClass = "bg-vampire-messy text-white border border-orange-500";
+                } else if (hasCritical) {
+                    outcome = "Éxito Crítico";
+                    outcomeClass = "bg-vampire-success text-white border border-green-500";
+                } else {
+                    outcome = "Éxito";
+                    outcomeClass = "bg-vampire-success text-white border border-green-600";
+                }
+            } else {
+                if (hasHungerOne) {
+                    outcome = "Fallo Bestial (Bestial Failure)";
+                    outcomeClass = "bg-vampire-bestial text-white border border-red-900";
+                } else {
+                    outcome = "Fallo";
+                    outcomeClass = "bg-vampire-failure text-white border border-red-700";
+                }
+            }
+
+            // Margin calculation
+            let margin = totalSuccesses - difficulty;
+
+            // Render elements
+            document.getElementById('roll-output').classList.remove('hidden');
+            document.getElementById('success-count').innerText = totalSuccesses;
+            
+            const marginCountEl = document.getElementById('margin-count');
+            const marginLabelEl = document.getElementById('margin-label');
+            if (isWin) {
+                marginCountEl.innerText = "+" + margin;
+                marginCountEl.className = "text-2xl font-bold text-green-500 font-mono";
+                marginLabelEl.innerText = "Margen de Éxito";
+            } else {
+                marginCountEl.innerText = margin;
+                marginCountEl.className = "text-2xl font-bold text-red-500 font-mono";
+                marginLabelEl.innerText = "Faltaron Éxitos";
+            }
+
+            const badge = document.getElementById('outcome-badge');
+            badge.innerText = outcome;
+            badge.className = `px-2.5 py-1 rounded text-xs font-bold uppercase tracking-wider ${outcomeClass}`;
+
+            // Render Dice Visually
+            renderDice('normal-dice-container', normalDiceResults, false);
+            renderDice('hunger-dice-container', hungerDiceResults, true);
+        }
+
+        function renderDice(containerId, results, isHunger) {
+            const container = document.getElementById(containerId);
+            container.innerHTML = "";
+
+            if (results.length === 0) {
+                container.innerHTML = `<span class="text-xs text-vampire-textMuted italic">Ninguno</span>`;
+                return;
+            }
+
+            results.forEach(val => {
+                const die = document.createElement('div');
+                let bgClass = isHunger ? "bg-red-950 border-red-800 text-red-300" : "bg-vampire-card border-vampire-border text-white";
+                
+                // Highlight criticals and failures
+                if (val === 10) {
+                    bgClass = isHunger ? "bg-orange-600 border-orange-400 text-white font-black animate-pulse" : "bg-yellow-600 border-yellow-400 text-white font-black";
+                } else if (val === 1 && isHunger) {
+                    bgClass = "bg-red-700 border-red-500 text-white font-black border-2";
+                } else if (val >= 6) {
+                    bgClass = isHunger ? "bg-red-900 border-red-600 text-red-100 font-bold" : "bg-gray-700 border-gray-500 text-white font-bold";
+                }
+
+                die.className = `w-8 h-8 rounded border flex items-center justify-center font-mono text-xs shadow-md ${bgClass}`;
+                die.innerText = val;
+                container.appendChild(die);
+            });
+        }
+
+        // NPC Health Tracker Systems (Superficial [/], Aggravated [X], Clean [ ])
+        const npcHealth = {
+            a: [0, 0, 0, 0, 0, 0],
+            b: [0, 0, 0, 0, 0, 0],
+            c: [0, 0, 0, 0, 0, 0, 0, 0]
+        };
+
+        function toggleHealth(npcKey, boxIndex) {
+            // Cycle: 0 (Empty) -> 1 (Superficial '/') -> 2 (Aggravated 'X') -> 0
+            let current = npcHealth[npcKey][boxIndex];
+            let next = (current + 1) % 3;
+            npcHealth[npcKey][boxIndex] = next;
+
+            updateHealthUI(npcKey);
+        }
+
+        function updateHealthUI(npcKey) {
+            const container = document.getElementById(`health-tracker-${npcKey}`);
+            const buttons = container.querySelectorAll('button');
+
+            buttons.forEach((btn, idx) => {
+                let state = npcHealth[npcKey][idx];
+                if (state === 0) {
+                    btn.innerText = "";
+                    btn.className = "w-4 h-4 border border-vampire-border bg-vampire-card rounded flex items-center justify-center text-[10px] font-bold text-red-500 font-mono hover:border-vampire-accent";
+                } else if (state === 1) {
+                    btn.innerText = "/";
+                    btn.className = "w-4 h-4 border border-orange-500 bg-orange-950/30 rounded flex items-center justify-center text-[10px] font-bold text-orange-400 font-mono";
+                } else if (state === 2) {
+                    btn.innerText = "X";
+                    btn.className = "w-4 h-4 border border-red-600 bg-red-950/50 rounded flex items-center justify-center text-[10px] font-bold text-red-500 font-mono";
+                }
+            });
+        }
+
+        function resetCazadores() {
+            Object.keys(npcHealth).forEach(npcKey => {
+                npcHealth[npcKey] = npcHealth[npcKey].map(() => 0);
+                updateHealthUI(npcKey);
+            });
+        }
+
+        // Initial trigger for setup UI
+        window.onload = function() {
+            updateHealthUI('a');
+            updateHealthUI('b');
+            updateHealthUI('c');
+        };
+    </script>
+</body>
+</html>
