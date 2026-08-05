@@ -1,0 +1,768 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Velada Vampírica - Guía Completa de Coctelería</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        vampire: {
+                            900: '#0b0305',
+                            800: '#1a080c',
+                            700: '#2d0c14',
+                            600: '#4a121e',
+                            red: '#991b1b',
+                            blood: '#dc2626',
+                            gold: '#d97706',
+                            lightgold: '#fef3c7'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Inter:wght@300;400;500;600;700&display=swap');
+        
+        .font-cinzel { font-family: 'Cinzel', serif; }
+        .font-sans { font-family: 'Inter', sans-serif; }
+
+        @media print {
+            .no-print { display: none !important; }
+            .print-section { display: block !important; }
+            body { background: white !important; color: black !important; }
+            .print-card { border: 1px solid #ccc !important; page-break-inside: avoid; }
+        }
+    </style>
+</head>
+<body class="bg-vampire-900 text-slate-100 font-sans min-h-screen flex flex-col">
+
+    <!-- Header Navigation -->
+    <header class="bg-vampire-800 border-b border-vampire-600 sticky top-0 z-50 shadow-xl no-print">
+        <div class="max-w-7xl mx-auto px-4 py-4 flex flex-col md:flex-row justify-between items-center gap-4">
+            <div class="flex items-center gap-3">
+                <span class="text-3xl">🩸</span>
+                <div>
+                    <h1 class="text-xl md:text-2xl font-bold font-cinzel text-vampire-blood tracking-wider">VELADA VAMPÍRICA</h1>
+                    <p class="text-xs text-slate-400">Guerra de Cócteles - Guía Operativa & Menú</p>
+                </div>
+            </div>
+
+            <!-- Tab Buttons -->
+            <nav class="flex bg-vampire-900 p-1 rounded-xl border border-vampire-700 w-full md:w-auto justify-center">
+                <button onclick="switchTab('compras')" id="btn-compras" 
+                    class="tab-btn px-4 py-2 rounded-lg text-sm font-medium transition-all flex items-center gap-2 bg-vampire-red text-white shadow-lg">
+                    <span>🛒</span> <span>1. Lista de Compras</span>
+                </button>
+                <button onclick="switchTab('bar')" id="btn-bar" 
+                    class="tab-btn px-4 py-2 rounded-lg text-sm font-medium transition-all flex items-center gap-2 text-slate-400 hover:text-white">
+                    <span>🍸</span> <span>2. Recetario de Bar</span>
+                </button>
+                <button onclick="switchTab('menu')" id="btn-menu" 
+                    class="tab-btn px-4 py-2 rounded-lg text-sm font-medium transition-all flex items-center gap-2 text-slate-400 hover:text-white">
+                    <span>📜</span> <span>3. Menú de Invitados</span>
+                </button>
+            </nav>
+
+            <button onclick="window.print()" class="hidden md:flex items-center gap-2 bg-slate-800 hover:bg-slate-700 text-xs px-3 py-2 rounded-lg border border-slate-600 transition">
+                <span>🖨️</span> Imprimir Sección
+            </button>
+        </div>
+    </header>
+
+    <!-- Content Wrapper -->
+    <main class="flex-1 max-w-7xl w-full mx-auto p-4 md:p-6">
+
+        <!-- ================= SECCIÓN 1: LISTA DE COMPRAS ================= -->
+        <section id="sec-compras" class="space-y-6 print-section">
+            <div class="bg-vampire-800 border border-vampire-700 rounded-2xl p-6 shadow-2xl">
+                <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 border-b border-vampire-700 pb-4 mb-6">
+                    <div>
+                        <span class="bg-vampire-red/30 text-vampire-blood text-xs font-semibold px-3 py-1 rounded-full border border-vampire-red/50">DESTINADO A: ENCARGADO DE COMPRAS</span>
+                        <h2 class="text-2xl font-cinzel font-bold text-vampire-lightgold mt-2">🛒 Lista de Compras "Cero Merma"</h2>
+                        <p class="text-sm text-slate-400">10 ingredientes universales para preparar los 20 cócteles de la velada.</p>
+                    </div>
+                    <div class="text-right text-xs text-slate-400 bg-vampire-900 p-3 rounded-xl border border-vampire-700">
+                        <p class="font-bold text-slate-200">Rendimiento Estimado:</p>
+                        <p>20-30 tragos en total sin residuos sobrantes raros</p>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    
+                    <!-- Licores -->
+                    <div class="bg-vampire-900/80 p-5 rounded-xl border border-vampire-700/80 print-card">
+                        <h3 class="text-vampire-gold font-cinzel font-bold text-lg mb-3 flex items-center gap-2">
+                            <span>🍾</span> Licores Base y Modificadores
+                        </h3>
+                        <ul class="space-y-3 text-sm">
+                            <li class="flex items-center gap-3">
+                                <input type="checkbox" class="w-4 h-4 text-vampire-red rounded bg-slate-800 border-slate-600 focus:ring-vampire-red">
+                                <div>
+                                    <span class="font-medium text-slate-200">Ron Blanco o Añejo</span>
+                                    <span class="block text-xs text-slate-400">1 Botella (750 ml)</span>
+                                </div>
+                            </li>
+                            <li class="flex items-center gap-3">
+                                <input type="checkbox" class="w-4 h-4 text-vampire-red rounded bg-slate-800 border-slate-600 focus:ring-vampire-red">
+                                <div>
+                                    <span class="font-medium text-slate-200">Tequila Blanco o Reposado</span>
+                                    <span class="block text-xs text-slate-400">1 Botella (750 ml)</span>
+                                </div>
+                            </li>
+                            <li class="flex items-center gap-3">
+                                <input type="checkbox" class="w-4 h-4 text-vampire-red rounded bg-slate-800 border-slate-600 focus:ring-vampire-red">
+                                <div>
+                                    <span class="font-medium text-slate-200">Licor de Café (Kahlúa o similar)</span>
+                                    <span class="block text-xs text-slate-400">1 Botella pequeña (350 ml - 750 ml)</span>
+                                </div>
+                            </li>
+                            <li class="flex items-center gap-3">
+                                <input type="checkbox" class="w-4 h-4 text-vampire-red rounded bg-slate-800 border-slate-600 focus:ring-vampire-red">
+                                <div>
+                                    <span class="font-medium text-slate-200">Jarabe de Granadina</span>
+                                    <span class="block text-xs text-slate-400">1 Botella (Para efecto sangre)</span>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!-- Mezcladores y Jugos -->
+                    <div class="bg-vampire-900/80 p-5 rounded-xl border border-vampire-700/80 print-card">
+                        <h3 class="text-vampire-gold font-cinzel font-bold text-lg mb-3 flex items-center gap-2">
+                            <span>🧃</span> Jugos y Mezcladores
+                        </h3>
+                        <ul class="space-y-3 text-sm">
+                            <li class="flex items-center gap-3">
+                                <input type="checkbox" class="w-4 h-4 text-vampire-red rounded bg-slate-800 border-slate-600 focus:ring-vampire-red">
+                                <div>
+                                    <span class="font-medium text-slate-200">Jugo de Granada o Arándano Oscuro</span>
+                                    <span class="block text-xs text-slate-400">2 Litros (Aporta el color rojo intenso)</span>
+                                </div>
+                            </li>
+                            <li class="flex items-center gap-3">
+                                <input type="checkbox" class="w-4 h-4 text-vampire-red rounded bg-slate-800 border-slate-600 focus:ring-vampire-red">
+                                <div>
+                                    <span class="font-medium text-slate-200">Jugo o Refresco de Toronja (Pomelo)</span>
+                                    <span class="block text-xs text-slate-400">1.5 - 2 Litros</span>
+                                </div>
+                            </li>
+                            <li class="flex items-center gap-3">
+                                <input type="checkbox" class="w-4 h-4 text-vampire-red rounded bg-slate-800 border-slate-600 focus:ring-vampire-red">
+                                <div>
+                                    <span class="font-medium text-slate-200">Limas / Limones Frescos</span>
+                                    <span class="block text-xs text-slate-400">1 a 1.5 kg (Para exprimir unos 500ml)</span>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!-- Frutas, Hierbas e Insumos -->
+                    <div class="bg-vampire-900/80 p-5 rounded-xl border border-vampire-700/80 print-card">
+                        <h3 class="text-vampire-gold font-cinzel font-bold text-lg mb-3 flex items-center gap-2">
+                            <span>🌿</span> Frutas, Hierbas y Hielo
+                        </h3>
+                        <ul class="space-y-3 text-sm">
+                            <li class="flex items-center gap-3">
+                                <input type="checkbox" class="w-4 h-4 text-vampire-red rounded bg-slate-800 border-slate-600 focus:ring-vampire-red">
+                                <div>
+                                    <span class="font-medium text-slate-200">Moras o Frutos Rojos (Frescos o congelados)</span>
+                                    <span class="block text-xs text-slate-400">2 cajitas o 1 bolsa congelada</span>
+                                </div>
+                            </li>
+                            <li class="flex items-center gap-3">
+                                <input type="checkbox" class="w-4 h-4 text-vampire-red rounded bg-slate-800 border-slate-600 focus:ring-vampire-red">
+                                <div>
+                                    <span class="font-medium text-slate-200">Menta Fresca / Hierbabuena</span>
+                                    <span class="block text-xs text-slate-400">1 manojo fresco</span>
+                                </div>
+                            </li>
+                            <li class="flex items-center gap-3">
+                                <input type="checkbox" class="w-4 h-4 text-vampire-red rounded bg-slate-800 border-slate-600 focus:ring-vampire-red">
+                                <div>
+                                    <span class="font-medium text-slate-200">Azúcar (para hacer Jarabe Natural)</span>
+                                    <span class="block text-xs text-slate-400">500g (Hervir partes iguales de agua y azúcar)</span>
+                                </div>
+                            </li>
+                            <li class="flex items-center gap-3">
+                                <input type="checkbox" class="w-4 h-4 text-vampire-red rounded bg-slate-800 border-slate-600 focus:ring-vampire-red">
+                                <div>
+                                    <span class="font-medium text-slate-200">Sal Fina e Hielo en Cubos</span>
+                                    <span class="block text-xs text-slate-400">Sal para escarchar + 2-3 bolsas grandes de hielo</span>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+
+                </div>
+
+                <!-- Kit Checklist -->
+                <div class="mt-8 bg-vampire-900 p-5 rounded-xl border border-vampire-700">
+                    <h3 class="text-slate-200 font-cinzel font-bold text-md mb-2 flex items-center gap-2">
+                        <span>🧰</span> Verificación del Kit de Coctelería de 23 piezas
+                    </h3>
+                    <div class="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-7 gap-2 text-xs text-slate-300">
+                        <span class="bg-vampire-800 px-2 py-1.5 rounded text-center border border-vampire-700">✓ Coctelera (750ml)</span>
+                        <span class="bg-vampire-800 px-2 py-1.5 rounded text-center border border-vampire-700">✓ Jigger Medidor</span>
+                        <span class="bg-vampire-800 px-2 py-1.5 rounded text-center border border-vampire-700">✓ Macerador</span>
+                        <span class="bg-vampire-800 px-2 py-1.5 rounded text-center border border-vampire-700">✓ Cuchara de Bar</span>
+                        <span class="bg-vampire-800 px-2 py-1.5 rounded text-center border border-vampire-700">✓ Colador</span>
+                        <span class="bg-vampire-800 px-2 py-1.5 rounded text-center border border-vampire-700">✓ Pinzas de Hielo</span>
+                        <span class="bg-vampire-800 px-2 py-1.5 rounded text-center border border-vampire-700">✓ Pajitas de Acero</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- ================= SECCIÓN 2: RECETARIO DE BAR ================= -->
+        <section id="sec-bar" class="space-y-6 hidden print-section">
+            <div class="bg-vampire-800 border border-vampire-700 rounded-2xl p-6 shadow-2xl">
+                <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 border-b border-vampire-700 pb-4 mb-6">
+                    <div>
+                        <span class="bg-vampire-gold/20 text-vampire-gold text-xs font-semibold px-3 py-1 rounded-full border border-vampire-gold/40">DESTINADO A: BARTENDERS / ÁREA DE BAR</span>
+                        <h2 class="text-2xl font-cinzel font-bold text-vampire-lightgold mt-2">🍸 Manual Técnico de Preparación</h2>
+                        <p class="text-sm text-slate-400">Guía de mixología utilizando el kit de 23 piezas para la Guerra de Cócteles.</p>
+                    </div>
+
+                    <!-- Category Filter -->
+                    <div class="flex gap-2 no-print">
+                        <button onclick="filterRecipes('all')" id="filter-all" class="px-3 py-1.5 rounded-lg text-xs font-bold bg-vampire-red text-white">Todos (20)</button>
+                        <button onclick="filterRecipes('ron')" id="filter-ron" class="px-3 py-1.5 rounded-lg text-xs font-bold bg-vampire-900 border border-vampire-700 text-slate-300 hover:text-white">Ron (10)</button>
+                        <button onclick="filterRecipes('tequila')" id="filter-tequila" class="px-3 py-1.5 rounded-lg text-xs font-bold bg-vampire-900 border border-vampire-700 text-slate-300 hover:text-white">Tequila (10)</button>
+                    </div>
+                </div>
+
+                <!-- Recipe Cards Grid -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6" id="recipes-container">
+                    
+                    <!-- 1. Sangre de Drácula -->
+                    <div class="recipe-card ron bg-vampire-900 p-5 rounded-xl border border-vampire-700 print-card">
+                        <div class="flex justify-between items-start mb-2">
+                            <h3 class="font-cinzel font-bold text-lg text-vampire-blood">1. Sangre de Drácula</h3>
+                            <span class="text-xs bg-red-950 text-red-300 px-2 py-0.5 rounded border border-red-800">Ron</span>
+                        </div>
+                        <p class="text-xs text-slate-400 mb-3"><strong>Herramientas:</strong> Macerador + Jigger + Coctelera + Colador + Pajita</p>
+                        <div class="bg-vampire-800/60 p-3 rounded-lg mb-3 text-xs space-y-1 text-slate-300">
+                            <p>• 60 ml Ron Blanco | 30 ml Jugo de Granada/Arándano</p>
+                            <p>• 20 ml Jugo de Lima | 15 ml Jarabe Natural | 6 Hojas de Menta</p>
+                        </div>
+                        <p class="text-xs text-slate-300 leading-relaxed"><strong>Paso a Paso:</strong> Macera la menta con la lima y jarabe en la coctelera. Agrega el ron, el jugo de granada y hielo. Agita fuertemente. Cuela en vaso con hielo fresco y sirve con la pajita de acero.</p>
+                    </div>
+
+                    <!-- 2. El Beso del Vampiro -->
+                    <div class="recipe-card ron bg-vampire-900 p-5 rounded-xl border border-vampire-700 print-card">
+                        <div class="flex justify-between items-start mb-2">
+                            <h3 class="font-cinzel font-bold text-lg text-vampire-blood">2. El Beso del Vampiro</h3>
+                            <span class="text-xs bg-red-950 text-red-300 px-2 py-0.5 rounded border border-red-800">Ron</span>
+                        </div>
+                        <p class="text-xs text-slate-400 mb-3"><strong>Herramientas:</strong> Jigger + Coctelera + Colador + Cuchara de Bar</p>
+                        <div class="bg-vampire-800/60 p-3 rounded-lg mb-3 text-xs space-y-1 text-slate-300">
+                            <p>• 50 ml Ron Blanco | 25 ml Licor de Café</p>
+                            <p>• 30 ml Jugo de Granada/Arándano | 10 ml Granadina</p>
+                        </div>
+                        <p class="text-xs text-slate-300 leading-relaxed"><strong>Paso a Paso:</strong> Agita el ron, licor de café y jugo con hielo en la coctelera. Cuela en copa. Vierte la granadina lentamente deslizándola por el dorso de la cuchara de bar para que caiga al fondo.</p>
+                    </div>
+
+                    <!-- 3. Daiquiri Sangriento -->
+                    <div class="recipe-card ron bg-vampire-900 p-5 rounded-xl border border-vampire-700 print-card">
+                        <div class="flex justify-between items-start mb-2">
+                            <h3 class="font-cinzel font-bold text-lg text-vampire-blood">3. Daiquiri Sangriento</h3>
+                            <span class="text-xs bg-red-950 text-red-300 px-2 py-0.5 rounded border border-red-800">Ron</span>
+                        </div>
+                        <p class="text-xs text-slate-400 mb-3"><strong>Herramientas:</strong> Macerador + Jigger + Coctelera + Colador</p>
+                        <div class="bg-vampire-800/60 p-3 rounded-lg mb-3 text-xs space-y-1 text-slate-300">
+                            <p>• 50 ml Ron Blanco | 25 ml Jugo de Lima</p>
+                            <p>• 20 ml Jarabe Natural | 4 Moras frescas</p>
+                        </div>
+                        <p class="text-xs text-slate-300 leading-relaxed"><strong>Paso a Paso:</strong> Macera las moras en la coctelera. Añade ron, lima, jarabe y abundante hielo. Agita con fuerza. Cuela en copa fría filtrando bien para retener semillas.</p>
+                    </div>
+
+                    <!-- 4. Mojito Vampírico -->
+                    <div class="recipe-card ron bg-vampire-900 p-5 rounded-xl border border-vampire-700 print-card">
+                        <div class="flex justify-between items-start mb-2">
+                            <h3 class="font-cinzel font-bold text-lg text-vampire-blood">4. Mojito Vampírico</h3>
+                            <span class="text-xs bg-red-950 text-red-300 px-2 py-0.5 rounded border border-red-800">Ron</span>
+                        </div>
+                        <p class="text-xs text-slate-400 mb-3"><strong>Herramientas:</strong> Macerador + Jigger + Coctelera + Pajita de Acero</p>
+                        <div class="bg-vampire-800/60 p-3 rounded-lg mb-3 text-xs space-y-1 text-slate-300">
+                            <p>• 60 ml Ron Blanco | 30 ml Jugo de Lima</p>
+                            <p>• 20 ml Jarabe Natural | 6 Hojas de Menta | 3 Moras</p>
+                        </div>
+                        <p class="text-xs text-slate-300 leading-relaxed"><strong>Paso a Paso:</strong> Macera la menta, moras, lima y jarabe en la coctelera. Añade el ron y hielo. Agita brevemente y sirve todo con contenido en vaso alto con la pajita de acero.</p>
+                    </div>
+
+                    <!-- 5. Rum Sour Sombrío -->
+                    <div class="recipe-card ron bg-vampire-900 p-5 rounded-xl border border-vampire-700 print-card">
+                        <div class="flex justify-between items-start mb-2">
+                            <h3 class="font-cinzel font-bold text-lg text-vampire-blood">5. Rum Sour Sombrío</h3>
+                            <span class="text-xs bg-red-950 text-red-300 px-2 py-0.5 rounded border border-red-800">Ron</span>
+                        </div>
+                        <p class="text-xs text-slate-400 mb-3"><strong>Herramientas:</strong> Jigger + Coctelera + Colador + Pinzas de Hielo</p>
+                        <div class="bg-vampire-800/60 p-3 rounded-lg mb-3 text-xs space-y-1 text-slate-300">
+                            <p>• 60 ml Ron Blanco | 30 ml Jugo de Lima</p>
+                            <p>• 20 ml Jarabe Natural | 10 ml Granadina</p>
+                        </div>
+                        <p class="text-xs text-slate-300 leading-relaxed"><strong>Paso a Paso:</strong> Agita el ron, lima y jarabe con hielo. Cuela en vaso corto sobre hielo servido con pinzas. Deja caer la granadina directamente al centro del trago sin mezclar.</p>
+                    </div>
+
+                    <!-- 6. Beso Negro -->
+                    <div class="recipe-card ron bg-vampire-900 p-5 rounded-xl border border-vampire-700 print-card">
+                        <div class="flex justify-between items-start mb-2">
+                            <h3 class="font-cinzel font-bold text-lg text-vampire-blood">6. Beso Negro</h3>
+                            <span class="text-xs bg-red-950 text-red-300 px-2 py-0.5 rounded border border-red-800">Ron</span>
+                        </div>
+                        <p class="text-xs text-slate-400 mb-3"><strong>Herramientas:</strong> Jigger + Coctelera + Colador</p>
+                        <div class="bg-vampire-800/60 p-3 rounded-lg mb-3 text-xs space-y-1 text-slate-300">
+                            <p>• 45 ml Ron Blanco | 30 ml Licor de Café</p>
+                            <p>• 15 ml Jugo de Lima | 10 ml Jarabe Natural</p>
+                        </div>
+                        <p class="text-xs text-slate-300 leading-relaxed"><strong>Paso a Paso:</strong> Pon todos los ingredientes en la coctelera con bastante hielo. Agita intensamente durante 10 segundos para generar espuma. Cuela en copa fría.</p>
+                    </div>
+
+                    <!-- 7. Ponche Infernal -->
+                    <div class="recipe-card ron bg-vampire-900 p-5 rounded-xl border border-vampire-700 print-card">
+                        <div class="flex justify-between items-start mb-2">
+                            <h3 class="font-cinzel font-bold text-lg text-vampire-blood">7. Ponche Infernal</h3>
+                            <span class="text-xs bg-red-950 text-red-300 px-2 py-0.5 rounded border border-red-800">Ron</span>
+                        </div>
+                        <p class="text-xs text-slate-400 mb-3"><strong>Herramientas:</strong> Jigger + Coctelera + Colador + Pajita</p>
+                        <div class="bg-vampire-800/60 p-3 rounded-lg mb-3 text-xs space-y-1 text-slate-300">
+                            <p>• 45 ml Ron Blanco | 45 ml Jugo Granada/Arándano</p>
+                            <p>• 45 ml Jugo de Toronja | 10 ml Granadina</p>
+                        </div>
+                        <p class="text-xs text-slate-300 leading-relaxed"><strong>Paso a Paso:</strong> Meztla todos los jugos, ron y granadina en la coctelera con hielo. Agita bien. Cuela en un vaso alto con hielo y sirve con la pajita de acero.</p>
+                    </div>
+
+                    <!-- 8. Mora Nocturna -->
+                    <div class="recipe-card ron bg-vampire-900 p-5 rounded-xl border border-vampire-700 print-card">
+                        <div class="flex justify-between items-start mb-2">
+                            <h3 class="font-cinzel font-bold text-lg text-vampire-blood">8. Mora Nocturna</h3>
+                            <span class="text-xs bg-red-950 text-red-300 px-2 py-0.5 rounded border border-red-800">Ron</span>
+                        </div>
+                        <p class="text-xs text-slate-400 mb-3"><strong>Herramientas:</strong> Macerador + Jigger + Coctelera + Colador + Pinzas</p>
+                        <div class="bg-vampire-800/60 p-3 rounded-lg mb-3 text-xs space-y-1 text-slate-300">
+                            <p>• 50 ml Ron Blanco | 40 ml Jugo Granada/Arándano</p>
+                            <p>• 15 ml Jarabe Natural | 4 Moras frescas</p>
+                        </div>
+                        <p class="text-xs text-slate-300 leading-relaxed"><strong>Paso a Paso:</strong> Macera las moras en la coctelera. Agrega el ron, el jugo y el jarabe con hielo. Agita enérgicamente y cuela en vaso corto con rocas de hielo servidas con las pinzas.</p>
+                    </div>
+
+                    <!-- 9. Zombie Express -->
+                    <div class="recipe-card ron bg-vampire-900 p-5 rounded-xl border border-vampire-700 print-card">
+                        <div class="flex justify-between items-start mb-2">
+                            <h3 class="font-cinzel font-bold text-lg text-vampire-blood">9. Zombie Express</h3>
+                            <span class="text-xs bg-red-950 text-red-300 px-2 py-0.5 rounded border border-red-800">Ron</span>
+                        </div>
+                        <p class="text-xs text-slate-400 mb-3"><strong>Herramientas:</strong> Jigger + Coctelera + Colador + Pajita</p>
+                        <div class="bg-vampire-800/60 p-3 rounded-lg mb-3 text-xs space-y-1 text-slate-300">
+                            <p>• 60 ml Ron Blanco | 45 ml Jugo de Toronja</p>
+                            <p>• 15 ml Jugo de Lima | 15 ml Granadina</p>
+                        </div>
+                        <p class="text-xs text-slate-300 leading-relaxed"><strong>Paso a Paso:</strong> Coloca el ron, los jugos cítricos y la granadina en la coctelera con hielo. Agita fuertemente. Cuela en vaso alto con hielo y pajita.</p>
+                    </div>
+
+                    <!-- 10. Elixir Carmesí -->
+                    <div class="recipe-card ron bg-vampire-900 p-5 rounded-xl border border-vampire-700 print-card">
+                        <div class="flex justify-between items-start mb-2">
+                            <h3 class="font-cinzel font-bold text-lg text-vampire-blood">10. Elixir Carmesí</h3>
+                            <span class="text-xs bg-red-950 text-red-300 px-2 py-0.5 rounded border border-red-800">Ron</span>
+                        </div>
+                        <p class="text-xs text-slate-400 mb-3"><strong>Herramientas:</strong> Jigger + Coctelera + Colador</p>
+                        <div class="bg-vampire-800/60 p-3 rounded-lg mb-3 text-xs space-y-1 text-slate-300">
+                            <p>• 50 ml Ron Blanco | 50 ml Jugo Granada/Arándano</p>
+                            <p>• 15 ml Jugo de Lima | 15 ml Jarabe Natural</p>
+                        </div>
+                        <p class="text-xs text-slate-300 leading-relaxed"><strong>Paso a Paso:</strong> Vierte todo en la coctelera con hielo y agita constantemente. Cuela en copa o vaso corto con una fina rodaja de lima.</p>
+                    </div>
+
+                    <!-- 11. Paloma Vampira -->
+                    <div class="recipe-card tequila bg-vampire-900 p-5 rounded-xl border border-vampire-700 print-card">
+                        <div class="flex justify-between items-start mb-2">
+                            <h3 class="font-cinzel font-bold text-lg text-vampire-gold">11. Paloma Vampira</h3>
+                            <span class="text-xs bg-amber-950 text-amber-300 px-2 py-0.5 rounded border border-amber-800">Tequila</span>
+                        </div>
+                        <p class="text-xs text-slate-400 mb-3"><strong>Herramientas:</strong> Jigger + Coctelera + Colador + Pajita</p>
+                        <div class="bg-vampire-800/60 p-3 rounded-lg mb-3 text-xs space-y-1 text-slate-300">
+                            <p>• 50 ml Tequila | 60 ml Jugo de Toronja</p>
+                            <p>• 15 ml Jugo de Lima | 15 ml Granadina</p>
+                        </div>
+                        <p class="text-xs text-slate-300 leading-relaxed"><strong>Paso a Paso:</strong> Agita el tequila, la lima, la toronja y la granadina con hielo en la coctelera. Cuela en vaso alto con hielo fresco y pajita.</p>
+                    </div>
+
+                    <!-- 12. Margarita del Inframundo -->
+                    <div class="recipe-card tequila bg-vampire-900 p-5 rounded-xl border border-vampire-700 print-card">
+                        <div class="flex justify-between items-start mb-2">
+                            <h3 class="font-cinzel font-bold text-lg text-vampire-gold">12. Margarita del Inframundo</h3>
+                            <span class="text-xs bg-amber-950 text-amber-300 px-2 py-0.5 rounded border border-amber-800">Tequila</span>
+                        </div>
+                        <p class="text-xs text-slate-400 mb-3"><strong>Herramientas:</strong> Jigger + Coctelera + Colador (Escarchado con sal)</p>
+                        <div class="bg-vampire-800/60 p-3 rounded-lg mb-3 text-xs space-y-1 text-slate-300">
+                            <p>• 50 ml Tequila | 30 ml Jugo de Lima</p>
+                            <p>• 20 ml Jarabe Natural | Sal para el borde</p>
+                        </div>
+                        <p class="text-xs text-slate-300 leading-relaxed"><strong>Paso a Paso:</strong> Pasa gajo de lima en el borde de la copa y escarcha con sal. Agita tequila, lima y jarabe con bastante hielo. Cuela con cuidado en la copa.</p>
+                    </div>
+
+                    <!-- 13. Margarita Sangrienta -->
+                    <div class="recipe-card tequila bg-vampire-900 p-5 rounded-xl border border-vampire-700 print-card">
+                        <div class="flex justify-between items-start mb-2">
+                            <h3 class="font-cinzel font-bold text-lg text-vampire-gold">13. Margarita Sangrienta</h3>
+                            <span class="text-xs bg-amber-950 text-amber-300 px-2 py-0.5 rounded border border-amber-800">Tequila</span>
+                        </div>
+                        <p class="text-xs text-slate-400 mb-3"><strong>Herramientas:</strong> Macerador + Jigger + Coctelera + Colador</p>
+                        <div class="bg-vampire-800/60 p-3 rounded-lg mb-3 text-xs space-y-1 text-slate-300">
+                            <p>• 50 ml Tequila | 25 ml Jugo de Lima</p>
+                            <p>• 20 ml Jarabe Natural | 4 Moras frescas | Sal</p>
+                        </div>
+                        <p class="text-xs text-slate-300 leading-relaxed"><strong>Paso a Paso:</strong> Macera las moras en la coctelera. Agrega tequila, lima, jarabe y hielo. Agita fuerte. Cuela en vaso escarchado con sal sobre hielo limpio.</p>
+                    </div>
+
+                    <!-- 14. Transilvania Sunrise -->
+                    <div class="recipe-card tequila bg-vampire-900 p-5 rounded-xl border border-vampire-700 print-card">
+                        <div class="flex justify-between items-start mb-2">
+                            <h3 class="font-cinzel font-bold text-lg text-vampire-gold">14. Transilvania Sunrise</h3>
+                            <span class="text-xs bg-amber-950 text-amber-300 px-2 py-0.5 rounded border border-amber-800">Tequila</span>
+                        </div>
+                        <p class="text-xs text-slate-400 mb-3"><strong>Herramientas:</strong> Jigger + Pinzas + Cuchara de Bar</p>
+                        <div class="bg-vampire-800/60 p-3 rounded-lg mb-3 text-xs space-y-1 text-slate-300">
+                            <p>• 50 ml Tequila | 90 ml Jugo de Toronja</p>
+                            <p>• 20 ml Granadina</p>
+                        </div>
+                        <p class="text-xs text-slate-300 leading-relaxed"><strong>Paso a Paso:</strong> Llena vaso alto con hielo. Vierte tequila y jugo de toronja. Vierte la granadina lentamente usando la cuchara de bar para formar capas degradadas.</p>
+                    </div>
+
+                    <!-- 15. Sombra de Granada -->
+                    <div class="recipe-card tequila bg-vampire-900 p-5 rounded-xl border border-vampire-700 print-card">
+                        <div class="flex justify-between items-start mb-2">
+                            <h3 class="font-cinzel font-bold text-lg text-vampire-gold">15. Sombra de Granada</h3>
+                            <span class="text-xs bg-amber-950 text-amber-300 px-2 py-0.5 rounded border border-amber-800">Tequila</span>
+                        </div>
+                        <p class="text-xs text-slate-400 mb-3"><strong>Herramientas:</strong> Jigger + Coctelera + Colador</p>
+                        <div class="bg-vampire-800/60 p-3 rounded-lg mb-3 text-xs space-y-1 text-slate-300">
+                            <p>• 50 ml Tequila | 45 ml Jugo Granada/Arándano</p>
+                            <p>• 15 ml Jugo de Lima | 15 ml Jarabe Natural</p>
+                        </div>
+                        <p class="text-xs text-slate-300 leading-relaxed"><strong>Paso a Paso:</strong> Agita los ingredientes en la coctelera con hielo hasta enfraiar al máximo. Cuela directamente en una copa helada sin hielo adicional.</p>
+                    </div>
+
+                    <!-- 16. Tequila Smash Gótico -->
+                    <div class="recipe-card tequila bg-vampire-900 p-5 rounded-xl border border-vampire-700 print-card">
+                        <div class="flex justify-between items-start mb-2">
+                            <h3 class="font-cinzel font-bold text-lg text-vampire-gold">16. Tequila Smash Gótico</h3>
+                            <span class="text-xs bg-amber-950 text-amber-300 px-2 py-0.5 rounded border border-amber-800">Tequila</span>
+                        </div>
+                        <p class="text-xs text-slate-400 mb-3"><strong>Herramientas:</strong> Macerador + Jigger + Coctelera + Colador + Pajita</p>
+                        <div class="bg-vampire-800/60 p-3 rounded-lg mb-3 text-xs space-y-1 text-slate-300">
+                            <p>• 50 ml Tequila | 20 ml Jugo de Lima | 15 ml Jarabe</p>
+                            <p>• 4 Moras frescas | 4 Hojas de Menta</p>
+                        </div>
+                        <p class="text-xs text-slate-300 leading-relaxed"><strong>Paso a Paso:</strong> Macera la menta y moras con jarabe y lima. Añade tequila y hielo, agita bien. Cuela en vaso corto con hielo y sirve con la pajita.</p>
+                    </div>
+
+                    <!-- 17. El Ritual -->
+                    <div class="recipe-card tequila bg-vampire-900 p-5 rounded-xl border border-vampire-700 print-card">
+                        <div class="flex justify-between items-start mb-2">
+                            <h3 class="font-cinzel font-bold text-lg text-vampire-gold">17. El Ritual</h3>
+                            <span class="text-xs bg-amber-950 text-amber-300 px-2 py-0.5 rounded border border-amber-800">Tequila</span>
+                        </div>
+                        <p class="text-xs text-slate-400 mb-3"><strong>Herramientas:</strong> Macerador + Jigger + Coctelera + Colador</p>
+                        <div class="bg-vampire-800/60 p-3 rounded-lg mb-3 text-xs space-y-1 text-slate-300">
+                            <p>• 50 ml Tequila | 40 ml Jugo Granada/Arándano</p>
+                            <p>• 15 ml Jugo de Lima | 3 Moras maceradas</p>
+                        </div>
+                        <p class="text-xs text-slate-300 leading-relaxed"><strong>Paso a Paso:</strong> Macera las moras en la coctelera, agrega tequila y jugos con bastante hielo. Agita con fuerza y cuela en vaso corto con hielo.</p>
+                    </div>
+
+                    <!-- 18. Tequila Espresso Vampírico -->
+                    <div class="recipe-card tequila bg-vampire-900 p-5 rounded-xl border border-vampire-700 print-card">
+                        <div class="flex justify-between items-start mb-2">
+                            <h3 class="font-cinzel font-bold text-lg text-vampire-gold">18. Tequila Espresso Vampírico</h3>
+                            <span class="text-xs bg-amber-950 text-amber-300 px-2 py-0.5 rounded border border-amber-800">Tequila</span>
+                        </div>
+                        <p class="text-xs text-slate-400 mb-3"><strong>Herramientas:</strong> Jigger + Coctelera + Colador</p>
+                        <div class="bg-vampire-800/60 p-3 rounded-lg mb-3 text-xs space-y-1 text-slate-300">
+                            <p>• 50 ml Tequila | 30 ml Licor de Café</p>
+                            <p>• 10 ml Jarabe Natural</p>
+                        </div>
+                        <p class="text-xs text-slate-300 leading-relaxed"><strong>Paso a Paso:</strong> Agita intensamente con bastantes cubos de hielo durante 15 segundos en la coctelera. Cuela en copa. Se creará una espuma aterciopelada.</p>
+                    </div>
+
+                    <!-- 19. Toronja & Agave Crush -->
+                    <div class="recipe-card tequila bg-vampire-900 p-5 rounded-xl border border-vampire-700 print-card">
+                        <div class="flex justify-between items-start mb-2">
+                            <h3 class="font-cinzel font-bold text-lg text-vampire-gold">19. Toronja & Agave Crush</h3>
+                            <span class="text-xs bg-amber-950 text-amber-300 px-2 py-0.5 rounded border border-amber-800">Tequila</span>
+                        </div>
+                        <p class="text-xs text-slate-400 mb-3"><strong>Herramientas:</strong> Jigger + Coctelera + Colador + Pajita</p>
+                        <div class="bg-vampire-800/60 p-3 rounded-lg mb-3 text-xs space-y-1 text-slate-300">
+                            <p>• 50 ml Tequila | 50 ml Jugo de Toronja</p>
+                            <p>• 15 ml Jugo de Lima | 15 ml Jarabe Natural</p>
+                        </div>
+                        <p class="text-xs text-slate-300 leading-relaxed"><strong>Paso a Paso:</strong> Agita todos los ingredientes con hielo en la coctelera. Sirve en vaso alto repleto de hielo y coloca la pajita de acero.</p>
+                    </div>
+
+                    <!-- 20. Beso de Agave -->
+                    <div class="recipe-card tequila bg-vampire-900 p-5 rounded-xl border border-vampire-700 print-card">
+                        <div class="flex justify-between items-start mb-2">
+                            <h3 class="font-cinzel font-bold text-lg text-vampire-gold">20. Beso de Agave</h3>
+                            <span class="text-xs bg-amber-950 text-amber-300 px-2 py-0.5 rounded border border-amber-800">Tequila</span>
+                        </div>
+                        <p class="text-xs text-slate-400 mb-3"><strong>Herramientas:</strong> Jigger + Coctelera + Colador</p>
+                        <div class="bg-vampire-800/60 p-3 rounded-lg mb-3 text-xs space-y-1 text-slate-300">
+                            <p>• 45 ml Tequila | 25 ml Licor de Café</p>
+                            <p>• 10 ml Granadina</p>
+                        </div>
+                        <p class="text-xs text-slate-300 leading-relaxed"><strong>Paso a Paso:</strong> Agita el tequila y el licor de café con hielo. Cuela en vaso corto sobre hielo. Añade la granadina al final para que caiga como una gota de sangre.</p>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+
+        <!-- ================= SECCIÓN 3: MENÚ DE INVITADOS ================= -->
+        <section id="sec-menu" class="space-y-6 hidden print-section">
+            <div class="bg-vampire-800 border-2 border-vampire-600 rounded-2xl p-6 md:p-10 shadow-2xl relative overflow-hidden">
+                
+                <div class="absolute -right-10 -top-10 w-40 h-40 bg-vampire-red/20 rounded-full blur-3xl pointer-events-none"></div>
+
+                <div class="text-center border-b border-vampire-600 pb-6 mb-8">
+                    <span class="text-xs tracking-widest text-vampire-gold uppercase font-semibold">Carta de Coctelería Oficial</span>
+                    <h2 class="text-3xl md:text-5xl font-cinzel font-black text-vampire-blood mt-2 tracking-wide">NOCHE DE SANGRE Y AGAVE</h2>
+                    <p class="text-xs md:text-sm text-slate-300 font-serif italic mt-2">"Elige tu elixir para la contienda..."</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
+                    
+                    <!-- ELIXIRES DE RON -->
+                    <div>
+                        <div class="flex items-center gap-2 border-b border-vampire-red/50 pb-2 mb-4">
+                            <span class="text-xl">🩸</span>
+                            <h3 class="font-cinzel text-xl font-bold text-vampire-blood tracking-wider">ELIXIRES DE RON</h3>
+                        </div>
+
+                        <ul class="space-y-4">
+                            <li class="border-b border-vampire-700/50 pb-2">
+                                <div class="flex justify-between items-baseline">
+                                    <h4 class="font-cinzel font-bold text-slate-200">1. Sangre de Drácula</h4>
+                                    <span class="text-xs text-vampire-gold">Fresco / Herbal</span>
+                                </div>
+                                <p class="text-xs text-slate-400">Ron blanco macerado con menta, lima y jugo carmesí de granada.</p>
+                            </li>
+                            <li class="border-b border-vampire-700/50 pb-2">
+                                <div class="flex justify-between items-baseline">
+                                    <h4 class="font-cinzel font-bold text-slate-200">2. El Beso del Vampiro</h4>
+                                    <span class="text-xs text-vampire-gold">Dulce / Oscuro</span>
+                                </div>
+                                <p class="text-xs text-slate-400">Sedosa fusión de ron, licor de café y gotas de sangre dulce de granadina.</p>
+                            </li>
+                            <li class="border-b border-vampire-700/50 pb-2">
+                                <div class="flex justify-between items-baseline">
+                                    <h4 class="font-cinzel font-bold text-slate-200">3. Daiquiri Sangriento</h4>
+                                    <span class="text-xs text-vampire-gold">Frutal / Cítrico</span>
+                                </div>
+                                <p class="text-xs text-slate-400">El clásico balance de ron y lima teñido intensamente con moras silvestres.</p>
+                            </li>
+                            <li class="border-b border-vampire-700/50 pb-2">
+                                <div class="flex justify-between items-baseline">
+                                    <h4 class="font-cinzel font-bold text-slate-200">4. Mojito Vampírico</h4>
+                                    <span class="text-xs text-vampire-gold">Refrescante</span>
+                                </div>
+                                <p class="text-xs text-slate-400">Explosión de menta, moras trituradas y ron sobre hielo.</p>
+                            </li>
+                            <li class="border-b border-vampire-700/50 pb-2">
+                                <div class="flex justify-between items-baseline">
+                                    <h4 class="font-cinzel font-bold text-slate-200">5. Rum Sour Sombrío</h4>
+                                    <span class="text-xs text-vampire-gold">Equilibrado</span>
+                                </div>
+                                <p class="text-xs text-slate-400">Cítrico aterciopelado con corazón denso de granadina.</p>
+                            </li>
+                            <li class="border-b border-vampire-700/50 pb-2">
+                                <div class="flex justify-between items-baseline">
+                                    <h4 class="font-cinzel font-bold text-slate-200">6. Beso Negro</h4>
+                                    <span class="text-xs text-vampire-gold">Intenso / Café</span>
+                                </div>
+                                <p class="text-xs text-slate-400">Cuerpo de café tostado con ron enérgicamente agitado.</p>
+                            </li>
+                            <li class="border-b border-vampire-700/50 pb-2">
+                                <div class="flex justify-between items-baseline">
+                                    <h4 class="font-cinzel font-bold text-slate-200">7. Ponche Infernal</h4>
+                                    <span class="text-xs text-vampire-gold">Cítrico / Dulce</span>
+                                </div>
+                                <p class="text-xs text-slate-400">Trago largo de ron con dúo de jugos rojos y toronja.</p>
+                            </li>
+                            <li class="border-b border-vampire-700/50 pb-2">
+                                <div class="flex justify-between items-baseline">
+                                    <h4 class="font-cinzel font-bold text-slate-200">8. Mora Nocturna</h4>
+                                    <span class="text-xs text-vampire-gold">Fruto Rojo</span>
+                                </div>
+                                <p class="text-xs text-slate-400">Moras del bosque maceradas en ron y néctar de granada.</p>
+                            </li>
+                            <li class="border-b border-vampire-700/50 pb-2">
+                                <div class="flex justify-between items-baseline">
+                                    <h4 class="font-cinzel font-bold text-slate-200">9. Zombie Express</h4>
+                                    <span class="text-xs text-vampire-gold">Potente</span>
+                                </div>
+                                <p class="text-xs text-slate-400">Doble carácter cítrico con base de ron y destello carmesí.</p>
+                            </li>
+                            <li class="pb-2">
+                                <div class="flex justify-between items-baseline">
+                                    <h4 class="font-cinzel font-bold text-slate-200">10. Elixir Carmesí</h4>
+                                    <span class="text-xs text-vampire-gold">Elegante</span>
+                                </div>
+                                <p class="text-xs text-slate-400">Trago sedoso de arándanos y ron perfectamente agitados.</p>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!-- ELIXIRES DE TEQUILA -->
+                    <div>
+                        <div class="flex items-center gap-2 border-b border-vampire-gold/50 pb-2 mb-4">
+                            <span class="text-xl">🦇</span>
+                            <h3 class="font-cinzel text-xl font-bold text-vampire-gold tracking-wider">VENENOS DE TEQUILA</h3>
+                        </div>
+
+                        <ul class="space-y-4">
+                            <li class="border-b border-vampire-700/50 pb-2">
+                                <div class="flex justify-between items-baseline">
+                                    <h4 class="font-cinzel font-bold text-slate-200">11. Paloma Vampira</h4>
+                                    <span class="text-xs text-vampire-gold">Cítrico / Burbujeante</span>
+                                </div>
+                                <p class="text-xs text-slate-400">Tequila con toronja madura y un velo de granadina.</p>
+                            </li>
+                            <li class="border-b border-vampire-700/50 pb-2">
+                                <div class="flex justify-between items-baseline">
+                                    <h4 class="font-cinzel font-bold text-slate-200">12. Margarita del Inframundo</h4>
+                                    <span class="text-xs text-vampire-gold">Clásico / Salado</span>
+                                </div>
+                                <p class="text-xs text-slate-400">Tequila agitado con lima fresca y borde escarchado en sal.</p>
+                            </li>
+                            <li class="border-b border-vampire-700/50 pb-2">
+                                <div class="flex justify-between items-baseline">
+                                    <h4 class="font-cinzel font-bold text-slate-200">13. Margarita Sangrienta</h4>
+                                    <span class="text-xs text-vampire-gold">Frutal / Cítrico</span>
+                                </div>
+                                <p class="text-xs text-slate-400">Margarita clásica infusionada con moras frescas maceradas.</p>
+                            </li>
+                            <li class="border-b border-vampire-700/50 pb-2">
+                                <div class="flex justify-between items-baseline">
+                                    <h4 class="font-cinzel font-bold text-slate-200">14. Transilvania Sunrise</h4>
+                                    <span class="text-xs text-vampire-gold">Visual / Degradado</span>
+                                </div>
+                                <p class="text-xs text-slate-400">Tequila y toronja con una densa puesta de sol en color sangre.</p>
+                            </li>
+                            <li class="border-b border-vampire-700/50 pb-2">
+                                <div class="flex justify-between items-baseline">
+                                    <h4 class="font-cinzel font-bold text-slate-200">15. Sombra de Granada</h4>
+                                    <span class="text-xs text-vampire-gold">Seco / Elegante</span>
+                                </div>
+                                <p class="text-xs text-slate-400">Tequila en copa helada con acidez intensa de granada.</p>
+                            </li>
+                            <li class="border-b border-vampire-700/50 pb-2">
+                                <div class="flex justify-between items-baseline">
+                                    <h4 class="font-cinzel font-bold text-slate-200">16. Tequila Smash Gótico</h4>
+                                    <span class="text-xs text-vampire-gold">Herbal / Frutal</span>
+                                </div>
+                                <p class="text-xs text-slate-400">Menta, moras y tequila triturados sobre rocas de hielo.</p>
+                            </li>
+                            <li class="border-b border-vampire-700/50 pb-2">
+                                <div class="flex justify-between items-baseline">
+                                    <h4 class="font-cinzel font-bold text-slate-200">17. El Ritual</h4>
+                                    <span class="text-xs text-vampire-gold">Rojo Intenso</span>
+                                </div>
+                                <p class="text-xs text-slate-400">Tequila envuelto en el carácter astringente de moras y arándanos.</p>
+                            </li>
+                            <li class="border-b border-vampire-700/50 pb-2">
+                                <div class="flex justify-between items-baseline">
+                                    <h4 class="font-cinzel font-bold text-slate-200">18. Tequila Espresso Vampírico</h4>
+                                    <span class="text-xs text-vampire-gold">Cremoso / Café</span>
+                                </div>
+                                <p class="text-xs text-slate-400">Espuma densa de café agitado fuertemente con agave.</p>
+                            </li>
+                            <li class="border-b border-vampire-700/50 pb-2">
+                                <div class="flex justify-between items-baseline">
+                                    <h4 class="font-cinzel font-bold text-slate-200">19. Toronja & Agave Crush</h4>
+                                    <span class="text-xs text-vampire-gold">Refrescante</span>
+                                </div>
+                                <p class="text-xs text-slate-400">Balance cítrico y herbal de tequila con toronja helada.</p>
+                            </li>
+                            <li class="pb-2">
+                                <div class="flex justify-between items-baseline">
+                                    <h4 class="font-cinzel font-bold text-slate-200">20. Beso de Agave</h4>
+                                    <span class="text-xs text-vampire-gold">Gota Sangrienta</span>
+                                </div>
+                                <p class="text-xs text-slate-400">Tequila y café con el toque final de una lágrima de granadina.</p>
+                            </li>
+                        </ul>
+                    </div>
+
+                </div>
+
+                <div class="text-center mt-10 pt-4 border-t border-vampire-700 text-xs text-slate-400 font-cinzel">
+                    🦇 GUERRA DE CÓCTELES • VELADA VAMPÍRICA 🦇
+                </div>
+
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-vampire-800 border-t border-vampire-700 py-4 text-center text-xs text-slate-500 no-print">
+        Velada Vampírica Coctelería • Sistema Integrado "Cero Merma"
+    </footer>
+
+    <!-- Interactive Script -->
+    <script>
+        function switchTab(tab) {
+            // Hide all sections
+            document.getElementById('sec-compras').classList.add('hidden');
+            document.getElementById('sec-bar').classList.add('hidden');
+            document.getElementById('sec-menu').classList.add('hidden');
+
+            // Reset tab button styling
+            const buttons = ['compras', 'bar', 'menu'];
+            buttons.forEach(b => {
+                const btn = document.getElementById(`btn-${b}`);
+                btn.className = "tab-btn px-4 py-2 rounded-lg text-sm font-medium transition-all flex items-center gap-2 text-slate-400 hover:text-white";
+            });
+
+            // Show selected section & highlight button
+            document.getElementById(`sec-${tab}`).classList.remove('hidden');
+            const activeBtn = document.getElementById(`btn-${tab}`);
+            activeBtn.className = "tab-btn px-4 py-2 rounded-lg text-sm font-medium transition-all flex items-center gap-2 bg-vampire-red text-white shadow-lg";
+        }
+
+        function filterRecipes(category) {
+            const cards = document.querySelectorAll('.recipe-card');
+            cards.forEach(card => {
+                if (category === 'all') {
+                    card.style.display = 'block';
+                } else {
+                    if (card.classList.contains(category)) {
+                        card.style.display = 'block';
+                    } else {
+                        card.style.display = 'none';
+                    }
+                }
+            });
+
+            // Update buttons state
+            ['all', 'ron', 'tequila'].forEach(cat => {
+                const btn = document.getElementById(`filter-${cat}`);
+                if (cat === category) {
+                    btn.className = "px-3 py-1.5 rounded-lg text-xs font-bold bg-vampire-red text-white";
+                } else {
+                    btn.className = "px-3 py-1.5 rounded-lg text-xs font-bold bg-vampire-900 border border-vampire-700 text-slate-300 hover:text-white";
+                }
+            });
+        }
+    </script>
+</body>
+</html>
