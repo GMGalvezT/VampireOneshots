@@ -1,0 +1,662 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>El Eclipse de El Ixtépete - Pantalla Extendida del Storyteller (V5)</title>
+  <style>
+    :root {
+      --bg-dark: #0a0a0d;
+      --bg-panel: #141419;
+      --bg-card: #1c1c24;
+      --border: #2d2d3d;
+      --text-main: #e2e8f0;
+      --text-muted: #94a3b8;
+      --accent-red: #991b1b;
+      --accent-red-bright: #ef4444;
+      --accent-gold: #b45309;
+      --accent-gold-bright: #f59e0b;
+      --accent-blue: #1d4ed8;
+      --accent-purple: #7c3aed;
+      --accent-green: #15803d;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; }
+
+    body {
+      background-color: var(--bg-dark);
+      color: var(--text-main);
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    header {
+      background: linear-gradient(135deg, #000000 0%, #320a0a 100%);
+      padding: 20px 30px;
+      border-bottom: 2px solid var(--accent-red);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.6);
+    }
+
+    header h1 { font-size: 1.8rem; color: var(--accent-red-bright); letter-spacing: 1px; text-transform: uppercase; }
+    header p { color: var(--accent-gold-bright); font-size: 0.95rem; font-style: italic; }
+
+    nav {
+      background-color: var(--bg-panel);
+      display: flex;
+      border-bottom: 1px solid var(--border);
+      overflow-x: auto;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+    }
+
+    nav button {
+      background: none;
+      border: none;
+      color: var(--text-muted);
+      padding: 16px 24px;
+      font-size: 0.95rem;
+      font-weight: bold;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      white-space: nowrap;
+    }
+
+    nav button:hover { color: var(--text-main); background-color: rgba(255,255,255,0.05); }
+    nav button.active { color: var(--accent-gold-bright); border-bottom: 3px solid var(--accent-gold-bright); background-color: var(--bg-card); }
+
+    main { flex: 1; padding: 25px; max-width: 1400px; margin: 0 auto; width: 100%; }
+
+    .tab-content { display: none; }
+    .tab-content.active { display: block; animation: fadeIn 0.3s ease-in-out; }
+
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+
+    .grid-1 { display: grid; grid-template-columns: 1fr; gap: 20px; }
+    .grid-2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(380px, 1fr)); gap: 20px; }
+    .grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
+
+    .card {
+      background-color: var(--bg-panel);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 22px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+      line-height: 1.6;
+    }
+
+    .card-header {
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 12px;
+      margin-bottom: 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .card-header h2, .card-header h3 { color: var(--accent-gold-bright); font-size: 1.25rem; }
+
+    .badge {
+      padding: 4px 10px;
+      border-radius: 4px;
+      font-size: 0.75rem;
+      font-weight: bold;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .badge-red { background-color: var(--accent-red); color: white; }
+    .badge-gold { background-color: var(--accent-gold); color: white; }
+    .badge-blue { background-color: var(--accent-blue); color: white; }
+    .badge-purple { background-color: var(--accent-purple); color: white; }
+
+    .narrative-box {
+      background-color: rgba(0,0,0,0.3);
+      border-left: 3px solid var(--accent-gold-bright);
+      padding: 12px 16px;
+      margin: 12px 0;
+      font-style: italic;
+      color: #cbd5e1;
+      border-radius: 0 4px 4px 0;
+    }
+
+    .gm-note {
+      background-color: rgba(153, 27, 27, 0.15);
+      border: 1px solid rgba(239, 68, 68, 0.3);
+      padding: 12px;
+      border-radius: 6px;
+      margin-top: 12px;
+      font-size: 0.9rem;
+    }
+
+    ul { list-style: none; }
+    ul li { margin-bottom: 10px; padding-left: 18px; position: relative; }
+    ul li::before { content: "◆"; position: absolute; left: 0; color: var(--accent-red-bright); font-size: 0.8rem; top: 2px; }
+
+    .stat-row { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px dashed rgba(255,255,255,0.1); }
+    .stat-row:last-child { border-bottom: none; }
+
+    /* Interactive Tracker */
+    .tracker-box { display: flex; align-items: center; gap: 12px; margin-top: 10px; }
+    .counter-btn {
+      background-color: var(--border);
+      color: white;
+      border: none;
+      width: 34px;
+      height: 34px;
+      border-radius: 4px;
+      font-weight: bold;
+      cursor: pointer;
+      font-size: 1rem;
+    }
+    .counter-btn:hover { background-color: var(--accent-red); }
+    .health-bar { display: flex; gap: 5px; }
+    .health-box { width: 26px; height: 26px; border: 1px solid var(--text-muted); background: #111; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 0.85rem; }
+    .health-box.damaged { background: var(--accent-red); color: white; }
+
+    /* Dice Roller */
+    .dice-container { display: flex; flex-direction: column; gap: 15px; }
+    .dice-inputs { display: flex; gap: 15px; align-items: center; flex-wrap: wrap; }
+    input[type="number"] { background: var(--bg-dark); border: 1px solid var(--border); color: white; padding: 8px; border-radius: 4px; width: 75px; font-size: 1rem; }
+    .btn-roll {
+      background: linear-gradient(135deg, var(--accent-red) 0%, #b91c1c 100%);
+      color: white;
+      border: none;
+      padding: 10px 22px;
+      border-radius: 4px;
+      font-weight: bold;
+      cursor: pointer;
+      font-size: 1rem;
+    }
+    .btn-roll:hover { filter: brightness(1.2); }
+    .dice-results {
+      background-color: var(--bg-dark);
+      border: 1px solid var(--border);
+      padding: 16px;
+      border-radius: 6px;
+      min-height: 90px;
+    }
+    .die {
+      display: inline-flex;
+      width: 38px;
+      height: 38px;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      margin: 4px;
+      font-size: 1.1rem;
+    }
+    .die.success { border-color: var(--accent-gold-bright); color: var(--accent-gold-bright); box-shadow: 0 0 6px rgba(251,191,36,0.3); }
+    .die.ten { background: var(--accent-gold); color: black; }
+    .die.hunger { border-color: var(--accent-red-bright); background: rgba(153, 27, 27, 0.4); }
+
+    /* Map Graphic Box */
+    .map-box {
+      width: 100%;
+      height: 360px;
+      background-color: #08080a;
+      border: 2px dashed var(--accent-gold);
+      border-radius: 8px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .map-zone { position: absolute; border: 1px solid rgba(251,191,36,0.4); padding: 12px; background: rgba(0,0,0,0.7); border-radius: 6px; text-align: center; }
+    .zone-1 { top: 25px; left: 25px; width: 42%; border-color: var(--accent-blue); }
+    .zone-2 { top: 25px; right: 25px; width: 48%; border-color: var(--accent-red); }
+    .zone-3 { bottom: 25px; right: 25px; width: 32%; border-color: var(--accent-gold); }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div>
+      <h1>El Eclipse de El Ixtépete</h1>
+      <p>Guía de Pantalla del Storyteller — Vampire: The Masquerade V5 vs Mago Hermético</p>
+    </div>
+    <span class="badge badge-red">Versión V5</span>
+  </header>
+
+  <nav>
+    <button class="active" onclick="switchTab('cronograma')">📜 Cronograma Detallado</button>
+    <button onclick="switchTab('mapa')">🗺️ Terreno y Arquitectura</button>
+    <button onclick="switchTab('bestia')">🩸 La Bestia y Fallos (V5)</button>
+    <button onclick="switchTab('dissaor')">🧙‍♂️ SPC: Dissaor</button>
+    <button onclick="switchTab('artefactos')">🗡️ Artefactos</button>
+    <button onclick="switchTab('herramientas')">🎲 Consola ST</button>
+  </nav>
+
+  <main>
+
+    <!-- TAB 1: CRONOGRAMA DETALLADO -->
+    <section id="cronograma" class="tab-content active">
+      <div class="grid-1">
+        
+        <!-- ACTO I -->
+        <div class="card">
+          <div class="card-header">
+            <h2>Acto I: El Velo de la Fase Grillo (Estructura II — Zona de Ingreso)</h2>
+            <span class="badge badge-blue">Fase de Infiltración</span>
+          </div>
+          <div class="narrative-box">
+            "El aire nocturno en Zapopan es frío, pero al cruzar la línea imaginaria que delimita el sitio arqueológico de El Ixtépete, la atmósfera se vuelve pesada y densa. Las luces urbanas de las avenidas cercanas parecen atenuarse. Ante ustedes se alza la Estructura II, un antiguo basamento religioso rodeado por la sombra de los árboles. De pronto, un escalofrío antinatural recorre la Vitae en sus venas: el lugar no está vacío... algo los está observando desde el corazón de la piedra."
+          </div>
+          
+          <p><strong>Descripción de la Escena:</strong></p>
+          <p style="margin-bottom: 10px; color: var(--text-muted);">
+            Dissaor ha utilizado la mampostería sagrada de la Estructura II (asociada históricamente a la fase Grillo del Valle de Atemajac, 450 a 900 d.C.) para tejer un <em>Velo de Inadvertencia Psíquica</em> (Mente 2 + Correspondencia 2) apoyado por un escaneo del aura de no-vida (Muerte 1).
+          </p>
+
+          <ul style="margin-top: 10px;">
+            <li><strong>Sensación Macabra (Muerte 1):</strong> Al ingresar, los vampiros sienten una pulsación fría que eriza su piel cadavérica. Su Bestia detecta la firma mística de un depredador que no respira.</li>
+            <li><strong>Bucle Espacial (Correspondencia 2):</strong> Quienes no presten atención caminan en círculos por la plaza central, reapareciendo en la escalinata poniente sin avanzar hacia la pirámide.</li>
+            <li><strong>Tirada Clave V5 — Romper el Velo:</strong> <code>Astucia + Consciencia (Dificultad 4)</code>. Si fallan, pierden 20 minutos valiosos caminando en bucle mientras Dissaor termina de preparar sus sellos.</li>
+            <li><strong>Tirada Opcional — Identificar Magia:</strong> <code>Inteligencia + Ocultismo (Dificultad 3)</code> para reconocer que la geometría del sitio ha sido consagrada mediante Alta Ritualística Hermética.</li>
+          </ul>
+
+          <div class="gm-note">
+            <strong>Consejo para el ST:</strong> Utiliza el silencio de la noche urbana. Si la coterie trae sirvientes ghouls o humanos, estos se sentirán extremadamente desorientados y mareados por el Velo de Mente.
+          </div>
+        </div>
+
+        <!-- ACTO II -->
+        <div class="card">
+          <div class="card-header">
+            <h2>Acto II: La Escalinata de Talud-Tablero y la Trampa de Fuego (Estructura I)</h2>
+            <span class="badge badge-gold">Fase de Trampa y Tensión</span>
+          </div>
+          <div class="narrative-box">
+            "Avanzan entre la hierba alta hacia la masa monumental de la Estructura I. Sus plataformas superpuestas en estilo talud-tablero parecen altares gigantescos bajo la luz de la luna. De pronto, un chasquido sordo retumba en el suelo: grandes bloques de piedra y barreras invisibles se sellan a sus espaldas. Un segundo después, los glifos egipcios grabados en las escalinatas estallan en una llamarada cegadora de luz dorada y azul. El calor es devastador, y la luz brilla con la inconfundible e insoportable esencia del Sol."
+          </div>
+
+          <p><strong>Descripción de la Escena:</strong></p>
+          <p style="margin-bottom: 10px; color: var(--text-muted);">
+            La coterie queda atrapada en el patio bajo de la pirámide principal. Dissaor desencadena su trampa preparada durante días usando Materia 3 para sellar la salida y Fuerzas 3 + Prime 5 para invocar fuego solar mágico.
+          </p>
+
+          <ul style="margin-top: 10px;">
+            <li><strong>Cierre Hermético (Materia 3):</strong> Las salidas se bloquean. Romper la piedra reforzada mágicamente requiere un chequeo de <code>Fuerza + Potencia (Dificultad 6)</code> o daño masivo acumulado.</li>
+            <li><strong>Anillo de Fuego Solar (Fuerzas 3 + Prime 5):</strong> El fuego invocado imita la luz solar directa. Los vampiros que miren fijamente o se acerquen deben realizar un chequeo de Rötschreck inmediato.</li>
+            <li><strong>Tirada Clave V5 — Evitar Rötschreck:</strong> <code>Compostura + Resolución (Dificultad 4)</code>. Los que fallan entran en Frenesí de Pánico y buscan huir a ciegas (ver pestaña "La Bestia").</li>
+            <li><strong>Efecto de Fuego:</strong> Cruzar la muralla de fuego causa 3 a 4 puntos de daño Agravado automático.</li>
+          </ul>
+
+          <div class="gm-note">
+            <strong>Consejo para el ST:</strong> Describe cómo la luz dorada quemaría la piel de los vástagos si no buscan cobertura tras las cornisa de talud-tablero de la pirámide.
+          </div>
+        </div>
+
+        <!-- ACTO III -->
+        <div class="card">
+          <div class="card-header">
+            <h2>Acto III: La Cámara del Noreste y el Ajuste de Cuentas (Clímax)</h2>
+            <span class="badge badge-red">Fase de Enfrentamiento Final</span>
+          </div>
+          <div class="narrative-box">
+            "En la cima de la pirámide, dentro del recinto rectangular de la esquina noreste, una figura solitaria permanece sentada en posición de loto. Viste túnicas de lino ceremonial y sostiene un estilete de obsidiana que refleja la luz del fuego. 'Han caído en la red, sanguijuelas', pronuncia con una voz que resuena directamente dentro de sus mentes. Sin embargo, cuando el primer zarpazo atraviesa su pecho, la figura se disuelve en una lluvia de destellos dorados... ¡era una ilusión! Desde la penumbra del pasaje interior, el verdadero Dissaor emerge canalizando una tormenta de energía pura."
+          </div>
+
+          <p><strong>Descripción de la Escena:</strong></p>
+          <p style="margin-bottom: 10px; color: var(--text-muted);">
+            El enfrentamiento directo con Dissaor ocurre en la habitación rectangular rellenada en la esquina noreste de la Estructura I. Dissaor utiliza su maestría en Prime 5 y Fuerzas 3 para defenderse mientras supedita la Paradoja en el templo consagrado.
+          </p>
+
+          <ul style="margin-top: 10px;">
+            <li><strong>Falsa Carnada (Mente 3 + Prime 2):</strong> El primer Dissaor es un holograma denso. Quien lo ataque pierde su primera acción principal y debe tirar <code>Astucia + Vigor (Dificultad 3)</code> para no quedar cegado por el destello de Quintesencia.</li>
+            <li><strong>Ataque Real de Dissaor:</strong> Ataca con rayos de plasma/fuego purificador (9 dados, 4 de daño Agravado) y utiliza contramagia (8 dados) para disipar Disciplinas de Dominación o Presencia.</li>
+            <li><strong>Condiciones de Victoria de la Coterie:</strong> Reducir la Salud de Dissaor a 0 o agotar su Fuerza de Voluntad (9 puntos). Al morir o quedar incapacitado, los sellos se apagan y los 4 artefactos pueden ser reclamados.</li>
+            <li><strong>Retirada Mágica:</strong> Si a Dissaor le restan 2 o menos puntos de Salud, ejecuta un ritual instantáneo de escape disolviéndose en luz dorada, dejando caer sus artefactos en el altar.</li>
+          </ul>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- TAB 2: MAPA Y ARQUITECTURA -->
+    <section id="mapa" class="tab-content">
+      <div class="card" style="margin-bottom: 20px;">
+        <div class="card-header">
+          <h3>Estructura Arqueológica y Zonas Tácticas</h3>
+          <span class="badge badge-gold">El Ixtépete — Zapopan</span>
+        </div>
+        <div class="map-box">
+          <div class="map-zone zone-1">
+            <strong style="color: var(--accent-blue);">ESTRUCTURA II (Entrada)</strong>
+            <p style="font-size: 0.8rem; margin-top: 5px;">Montículo y plaza baja. Velo Psíquico y percepción de Muerte 1.</p>
+          </div>
+          <div class="map-zone zone-2">
+            <strong style="color: var(--accent-red);">ESTRUCTURA I (Pirámide)</strong>
+            <p style="font-size: 0.8rem; margin-top: 5px;">Mampostería Talud-Tablero. Anillo de Fuego Solar y Cierre de Materia 3.</p>
+          </div>
+          <div class="map-zone zone-3">
+            <strong style="color: var(--accent-gold-bright);">CÁMARA NORESTE</strong>
+            <p style="font-size: 0.8rem; margin-top: 5px;">Altar rectangular. Posición real de Dissaor y Artefactos.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <h3>Detalles de Terreno y Coberturas (V5)</h3>
+          <span class="badge badge-purple">Reglas de Entorno</span>
+        </div>
+        <ul>
+          <li><strong>Talud-Tablero (Pirámide):</strong> Proporciona Cobertura Media (+2 dados a reservas de defensa contra proyectiles o ataques a distancia).</li>
+          <li><strong>Plaza Central Despejada:</strong> Zona Abierta. Sin cobertura contra los ataques de Fuego Purificador de Dissaor.</li>
+          <li><strong>Muros Bloqueados (Materia 3):</strong> Requieren infligir 15 puntos de daño estructural o superar chequeo de <code>Fuerza + Potencia (Dif. 6)</code> para abrir una brecha de escape.</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- TAB 3: LA BESTIA Y FALLOS (NUEVA TAB DETALLADA) -->
+    <section id="bestia" class="tab-content">
+      <div class="grid-2">
+        
+        <!-- Rötschreck y Frenesí -->
+        <div class="card">
+          <div class="card-header">
+            <h3>Rötschreck (Frenesí de Pánico)</h3>
+            <span class="badge badge-red">Peligro Crítico</span>
+          </div>
+          <p style="margin-bottom: 10px; font-size: 0.95rem;">
+            El fuego solar convocado por Dissaor mediante Fuerzas 3 + Prime 5 es una pesadilla viviente para la Vitae vampírica.
+          </p>
+
+          <ul>
+            <li><strong>Disparador:</strong> Presenciar la activación del anillo de fuego en la Estructura I o ser alcanzado por un ataque de Fuego Purificador.</li>
+            <li><strong>Tirada de Resistencia:</strong> <code>Compostura + Resolución (Dificultad 4 o 5)</code>.</li>
+            <li><strong>Efecto en Falla:</strong> La Bestia toma el control total. El vampiro huye a máxima velocidad sin importar los obstáculos, empujando o atacando a compañeros que se interpongan, rompiendo la Mascarada o saltando a ciegas desde los muros de la pirámide.</li>
+            <li><strong>Recuperación:</strong> Gastar 1 punto de Fuerza de Voluntad permite 1 turno de control consciente. Al inicio de cada turno posterior lejos del fuego, el jugador puede repetir la tirada (Dificultad 4).</li>
+          </ul>
+        </div>
+
+        <!-- Frenesí de Furia -->
+        <div class="card">
+          <div class="card-header">
+            <h3>Frenesí de Furia / Provocación</h3>
+            <span class="badge badge-gold">Pérdida de Control</span>
+          </div>
+          <p style="margin-bottom: 10px; font-size: 0.95rem;">
+            Dissaor utiliza la Esfera de Mente 3 para transmitir insultos telepáticos sobre la naturaleza "cadavérica y parásita" de los no-muertos.
+          </p>
+
+          <ul>
+            <li><strong>Disparador:</strong> Sufrir provocaciones psíquicas de Dissaor o recibir daño Agravado.</li>
+            <li><strong>Tirada de Resistencia:</strong> <code>Compostura + Resolución (Dificultad 3)</code>.</li>
+            <li><strong>Efecto en Falla:</strong> El vampiro ataca incansablemente a Dissaor cuerpo a cuerpo, ignorando coberturas, trampas activas o advertencias tácticas de la coterie.</li>
+          </ul>
+        </div>
+
+        <!-- Críticos Bestiales -->
+        <div class="card">
+          <div class="card-header">
+            <h3>Críticos Bestiales (Messy Criticals)</h3>
+            <span class="badge badge-purple">V5 Mecánica</span>
+          </div>
+          <p style="margin-bottom: 10px; font-size: 0.95rem;">
+            Ocurre cuando se obtiene un par de 10s en la tirada e incluye al menos un 10 en los Dados de Ansia (Hunger Dice).
+          </p>
+
+          <ul>
+            <li><strong>Sed de Quintesencia:</strong> El vampiro logra el éxito pero se abalanza sobre el cuerpo del enemigo o de un aliado para beber su sangre mezclada con la energía mágica del templo.</li>
+            <li><strong>Destrucción Iconoclasta:</strong> El ataque destruye los bloques de talud-tablero o rompe los artefactos de Dissaor en el proceso.</li>
+            <li><strong>Exposición Monstruosa:</strong> La piel del vástago se deforma grotescamente revelando su rostro cadavérico, confirmando los prejuicios de Dissaor.</li>
+          </ul>
+        </div>
+
+        <!-- Fallos Bestiales y Compulsiones -->
+        <div class="card">
+          <div class="card-header">
+            <h3>Fallos Bestiales y Compulsiones</h3>
+            <span class="badge badge-red">V5 Mecánica</span>
+          </div>
+          <p style="margin-bottom: 10px; font-size: 0.95rem;">
+            Ocurre cuando la tirada falla y aparece un 1 en los Dados de Ansia. La Bestia impone una Compulsión inmediata:
+          </p>
+
+          <ul>
+            <li><strong>Compulsión de Paranoia:</strong> El vampiro cree que sus compañeros de coterie han sido dominados mentalmente por Dissaor y rechaza su ayuda.</li>
+            <li><strong>Compulsión de Daño:</strong> Obsesión irracional por destrozar los glifos o muros de piedra antes que defenderse de los ataques directos.</li>
+            <li><strong>Compulsión de Hambre:</strong> La Bestia exige alimento inmediato en medio del combate, ignorando cualquier orden táctica.</li>
+          </ul>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- TAB 4: DISSAOR -->
+    <section id="dissaor" class="tab-content">
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-header">
+            <h3>Dissaor — Mago Hermético Egipcio</h3>
+            <span class="badge badge-red">SPC Antagonista</span>
+          </div>
+          <div class="stat-row"><span>Atributos Físicos:</span> <strong>Fuerza 2, Destreza 3, Resistencia 3</strong></div>
+          <div class="stat-row"><span>Atributos Sociales:</span> <strong>Carisma 4, Manipulación 4, Compostura 4</strong></div>
+          <div class="stat-row"><span>Atributos Mentales:</span> <strong>Inteligencia 5, Astucia 5, Resolución 5</strong></div>
+          <div class="stat-row"><span>Salud / Voluntad:</span> <strong>Salud: 7 | Voluntad: 9</strong></div>
+          <div class="stat-row"><span>Reserva de Ocultismo:</span> <strong>10 Dados</strong></div>
+          <div class="stat-row"><span>Esferas Destacadas:</span> <strong>Prime 5, Fuerzas 3, Materia 3, Mente 3, Corres. 2, Entropía 2, Muerte 1</strong></div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <h3>Reservas de Combate V5</h3>
+            <span class="badge badge-gold">Acciones Rápidas</span>
+          </div>
+          <ul>
+            <li><strong>Fuego Purificador (Fuerzas 3 + Prime 5):</strong> 9 Dados. Causa 4 puntos de daño Agravado por fuego solar a distancia.</li>
+            <li><strong>Defensa Mística / Esquiva:</strong> 8 Dados.</li>
+            <li><strong>Contramagia Hermética:</strong> 8 Dados (Tirada opuesta contra Disciplinas mentales o ilusiones).</li>
+            <li><strong>Escudo de Materia:</strong> Reduce en 3 puntos todo el daño físico o de armas de fuego recibido.</li>
+            <li><strong>Sabotaje Entrópico:</strong> Puede encasquillar un arma de fuego o partir una hoja de metal instantáneamente (1 vez/turno).</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 5: ARTEFACTOS -->
+    <section id="artefactos" class="tab-content">
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-header">
+            <h3>Escarabajo de Solarización</h3>
+            <span class="badge badge-gold">Prime 5 / Fuerzas 3</span>
+          </div>
+          <p style="font-size: 0.95rem; line-height: 1.5;">Amuleto de lapislázuli y oro. Una vez por noche, el usuario puede gastar 1 pt de Fuerza de Voluntad para emitir un destello de luz solar pura. Todos los vampiros en el área sufren tirada de Rötschreck (Dif 4) y 2 de daño Agravado si no se cubren.</p>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <h3>Tablerillo de Hermes</h3>
+            <span class="badge badge-blue">Materia 3 / Corres. 2</span>
+          </div>
+          <p style="font-size: 0.95rem; line-height: 1.5;">Placa de bronce con ecuaciones geométricas. Permite hacer un chequeo de <em>Inteligencia + Ocultismo (Dif 3)</em> para sellar o abrir aberturas en estructuras de piedra u hormigón de forma instantánea.</p>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <h3>Estilete de Obsidiana Consagrada</h3>
+            <span class="badge badge-red">Prime 2 / Materia 3</span>
+          </div>
+          <p style="font-size: 0.95rem; line-height: 1.5;">Daga de obsidiana rellenada con filamentos de oro. Otorga +2 de Daño en combate cuerpo a cuerpo y convierte todo el daño infligido en <strong>Daño Agravado</strong> contra vampiros y ghouls.</p>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <h3>Anillo de la Mente Imperturbable</h3>
+            <span class="badge badge-gold">Mente 3</span>
+          </div>
+          <p style="font-size: 0.95rem; line-height: 1.5;">Anillo de plata grabado con glifos herméticos internos. Otorga +3 dados a la reserva del portador para resistir Disciplinas de control mental (Dominación, Presencia, Dementación).</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 6: CONSOLA ST -->
+    <section id="herramientas" class="tab-content">
+      <div class="grid-2">
+        <!-- Tracker de Dissaor -->
+        <div class="card">
+          <div class="card-header">
+            <h3>Estado de Dissaor en Vivo</h3>
+            <span class="badge badge-red">Tracker</span>
+          </div>
+          
+          <p><strong>Salud (7 Puntos):</strong></p>
+          <div class="tracker-box">
+            <div class="health-bar" id="healthBar"></div>
+            <button class="counter-btn" onclick="applyDamage()">-</button>
+            <button class="counter-btn" onclick="healDamage()">+</button>
+          </div>
+
+          <p style="margin-top: 20px;"><strong>Fuerza de Voluntad (9 Puntos):</strong></p>
+          <div class="tracker-box">
+            <span id="willpowerVal" style="font-weight: bold; color: var(--accent-gold-bright); font-size: 1.2rem;">9 / 9</span>
+            <button class="counter-btn" onclick="adjustWillpower(-1)">-</button>
+            <button class="counter-btn" onclick="adjustWillpower(1)">+</button>
+          </div>
+        </div>
+
+        <!-- Lanzador de Dados V5 -->
+        <div class="card">
+          <div class="card-header">
+            <h3>Lanzador de Dados V5</h3>
+            <span class="badge badge-gold">Sistema V5</span>
+          </div>
+          <div class="dice-container">
+            <div class="dice-inputs">
+              <label>Reserva Normal: <input type="number" id="diceCount" value="9" min="1" max="20"></label>
+              <label>Dados de Ansia: <input type="number" id="hungerCount" value="1" min="0" max="5"></label>
+              <button class="btn-roll" onclick="rollV5()">Lanzar V5</button>
+            </div>
+            <div>
+              <button class="counter-btn" style="width: auto; padding: 0 10px;" onclick="setPool(9)">Fuego (9d)</button>
+              <button class="counter-btn" style="width: auto; padding: 0 10px;" onclick="setPool(8)">Defensa (8d)</button>
+              <button class="counter-btn" style="width: auto; padding: 0 10px;" onclick="setPool(10)">Ocultismo (10d)</button>
+            </div>
+            <div class="dice-results" id="diceResults">
+              <p style="color: var(--text-muted);">Haz clic en 'Lanzar V5' para calcular éxitos y detectar Críticos/Fallos Bestiales...</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <script>
+    // Tab switching logic
+    function switchTab(tabId) {
+      document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
+      document.querySelectorAll('nav button').forEach(btn => btn.classList.remove('active'));
+      
+      document.getElementById(tabId).classList.add('active');
+      event.target.classList.add('active');
+    }
+
+    // Health Tracker Logic
+    let maxHealth = 7;
+    let currentDamage = 0;
+
+    function renderHealth() {
+      const container = document.getElementById('healthBar');
+      container.innerHTML = '';
+      for (let i = 0; i < maxHealth; i++) {
+        const box = document.createElement('div');
+        box.className = 'health-box' + (i < currentDamage ? ' damaged' : '');
+        box.innerText = i < currentDamage ? 'X' : '';
+        container.appendChild(box);
+      }
+    }
+
+    function applyDamage() { if (currentDamage < maxHealth) currentDamage++; renderHealth(); }
+    function healDamage() { if (currentDamage > 0) currentDamage--; renderHealth(); }
+
+    // Willpower Tracker
+    let willpower = 9;
+    function adjustWillpower(delta) {
+      willpower = Math.max(0, Math.min(9, willpower + delta));
+      document.getElementById('willpowerVal').innerText = `${willpower} / 9`;
+    }
+
+    // Dice Roller V5 (Con Dados de Ansia)
+    function setPool(val) { document.getElementById('diceCount').value = val; }
+
+    function rollV5() {
+      const totalPool = parseInt(document.getElementById('diceCount').value) || 1;
+      const hunger = Math.min(totalPool, parseInt(document.getElementById('hungerCount').value) || 0);
+      const normalPool = Math.max(0, totalPool - hunger);
+
+      const resultsContainer = document.getElementById('diceResults');
+      resultsContainer.innerHTML = '';
+
+      let successes = 0;
+      let tensCount = 0;
+      let hungerTens = 0;
+      let hungerOnes = 0;
+
+      let normalRolls = [];
+      let hungerRolls = [];
+
+      // Normal dice
+      for (let i = 0; i < normalPool; i++) {
+        const roll = Math.floor(Math.random() * 10) + 1;
+        normalRolls.push(roll);
+        if (roll >= 6) successes++;
+        if (roll === 10) tensCount++;
+      }
+
+      // Hunger dice
+      for (let i = 0; i < hunger; i++) {
+        const roll = Math.floor(Math.random() * 10) + 1;
+        hungerRolls.push(roll);
+        if (roll >= 6) successes++;
+        if (roll === 10) { tensCount++; hungerTens++; }
+        if (roll === 1) hungerOnes++;
+      }
+
+      // Calculate critical pairs
+      const extraCritSuccesses = Math.floor(tensCount / 2) * 2;
+      const totalSuccesses = successes + extraCritSuccesses;
+
+      let messyCrit = (extraCritSuccesses > 0 && hungerTens > 0);
+      let bestialFailure = (totalSuccesses === 0 && hungerOnes > 0);
+
+      let statusMsg = '';
+      if (messyCrit) statusMsg = '<span style="color: var(--accent-purple); font-weight: bold;"> ¡CRÍTICO BESTIAL!</span>';
+      else if (bestialFailure) statusMsg = '<span style="color: var(--accent-red-bright); font-weight: bold;"> ¡FALLO BESTIAL!</span>';
+      else if (extraCritSuccesses > 0) statusMsg = '<span style="color: var(--accent-gold-bright); font-weight: bold;"> ¡Éxito Crítico Mágico!</span>';
+
+      let html = `<p style="margin-bottom: 8px;"><strong>Éxitos Totales: <span style="color: var(--accent-gold-bright); font-size: 1.25rem;">${totalSuccesses}</span></strong> ${statusMsg}</p><div>`;
+
+      normalRolls.forEach(r => {
+        let css = 'die';
+        if (r === 10) css += ' ten success';
+        else if (r >= 6) css += ' success';
+        html += `<span class="${css}">${r}</span>`;
+      });
+
+      hungerRolls.forEach(r => {
+        let css = 'die hunger';
+        if (r === 10) css += ' ten success';
+        else if (r >= 6) css += ' success';
+        html += `<span class="${css}">${r}</span>`;
+      });
+
+      html += '</div>';
+      resultsContainer.innerHTML = html;
+    }
+
+    // Initialize UI
+    renderHealth();
+  </script>
+</body>
+</html>
